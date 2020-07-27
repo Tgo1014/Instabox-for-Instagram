@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_margin">16dp</dimen>
+    <dimen name="chipTextSize">11sp</dimen>
+    <dimen name="feedItemPaddingBottom">2dp</dimen>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Instabox para Instagram</string>
+    <string name="action_dialog_message">%1$s %2$d de %3$d</string>
+    <string name="feed">Feed</string>
+    <string name="archive">Arquivar</string>
+    <string name="hashtags">Hashtags</string>
+    <string name="info">Info</string>
+    <string name="copy_hashtags">Copiar #s</string>
+    <string name="post_to_insta">Postar no Insta</string>
+    <string name="you_need_to_login_to_manage_your_feed">Você precisar logar para gerenciar seu feed</string>
+    <string name="login">Login</string>
+    <string name="no_images_found">Nenhuma imagem encontrada</string>
+    <string name="refresh">Atualizar</string>
+    <string name="privacy_policy">Política de Privacidade</string>
+    <string name="unarchive">Desarquivar</string>
+    <string name="processing_image">Processando Imagem</string>
+    <string name="generate">Gerar</string>
+    <string name="unable_to_load">Não foi possível carregar, tente novamente</string>
+    <string name="archiving">Arquivando</string>
+    <string name="unarchiving">Desarquivando</string>
+    <string name="error">Erro</string>
+    <string name="success">Sucesso</string>
+    <string name="fail_to_get_image">Não foi possível obter imagem</string>
+    <string name="share_to">Postar no Instas</string>
+</resources>

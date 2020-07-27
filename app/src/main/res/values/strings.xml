@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Instabox for Instagram</string>
+    <string name="action_dialog_message">%1$s %2$d of %3$d</string>
+    <string name="app_ad_id" translatable="false"></string>
+    <string name="ad_unit_id" translatable="false"></string>
+    <string name="publisher_id" translatable="false"></string>
+    <string name="privacy_url" translatable="false">https://github.com/Tgo1014/Privacy-Policy/blob/master/instabox.md</string>
+    <string name="feed">Feed</string>
+    <string name="archive">Archive</string>
+    <string name="hashtags">Hashtags</string>
+    <string name="info">Info</string>
+    <string name="copy_hashtags">Copy #\'s</string>
+    <string name="post_to_insta">Post to Insta</string>
+    <string name="you_need_to_login_to_manage_your_feed">You need to login to manage your feed</string>
+    <string name="login">Login</string>
+    <string name="no_images_found">No images found</string>
+    <string name="refresh">Refresh</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="unarchive">Unarchive</string>
+    <string name="processing_image">Processing image</string>
+    <string name="generate">Generate</string>
+    <string name="unable_to_load">Unable to load, please try again</string>
+    <string name="archiving">Archiving</string>
+    <string name="unarchiving">Unarchiving</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="fail_to_get_image">Failed to get image</string>
+    <string name="share_to">Posto on Insta</string>
+</resources>
