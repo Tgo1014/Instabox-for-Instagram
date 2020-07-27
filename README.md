@@ -12,6 +12,7 @@ Manage your feed allowing you to archive and unarchive multiples photos at the s
 - Glide
 - AdMob
 - Firebase
+- Coroutines
 
 ### Unit tests
 - MockWebServer
