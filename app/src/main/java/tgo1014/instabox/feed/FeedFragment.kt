@@ -15,7 +15,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import tgo1014.instabox.R
-import tgo1014.instabox.common.managers.AdManager
 import tgo1014.instabox.common.utils.GridSpacingItemDecoration
 import tgo1014.instabox.common.utils.openActivity
 import tgo1014.instabox.common.utils.showX
@@ -30,7 +29,6 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
     private val isArchive
         get() = arguments?.getBoolean(PARAM_SHOW_ARCHIVED) ?: false
 
-    private val adManager: AdManager by inject { parametersOf(requireActivity()) }
     private var actionDialog: AlertDialog? = null
     private var actionDialogView: View? = null
     private val viewModel: FeedViewModel by viewModel()
@@ -55,7 +53,6 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adManager.preloadRewardAd()
         setListeners()
         setupRecycler()
         handleViewModel()
@@ -70,12 +67,7 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
     private fun setListeners() {
         feedFab.text = getString(if (isArchive) R.string.unarchive else R.string.archive)
         feedFab.setOnClickListener {
-            adManager.showRewardAd(
-                onReward = {
-                    adManager.preloadRewardAd() // Load the next ad
-                    viewModel.feedItemAction(*adapter.selectedIdsList.toTypedArray())
-                },
-                onFail = { toast(getString(R.string.unable_to_load)) })
+            viewModel.feedItemAction(*adapter.selectedIdsList.toTypedArray())
         }
         feedBtnLogin.setOnClickListener { openActivity<LoginActivity>() }
         feedSwipe.setOnRefreshListener { refresh() }

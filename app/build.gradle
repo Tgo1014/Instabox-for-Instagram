@@ -128,10 +128,6 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-    // AdMob
-    implementation 'com.google.android.gms:play-services-ads:19.3.0'
-    implementation 'com.google.android.ads.consent:consent-library:1.0.8'
-
     // PeakAndPop
     implementation 'com.github.shalskar:PeekAndPop:1.1.0'
 

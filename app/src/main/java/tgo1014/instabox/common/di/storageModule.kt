@@ -11,7 +11,6 @@ import tgo1014.instabox.common.managers.*
 val storageModule = module {
     single { android.webkit.CookieManager.getInstance() }
     single { provideSharedPreferences(get()) }
-    single<AdManager> { (activity: Activity) -> AdManagerImpl(activity) }
     singleBy<UserManager, UserManagerImpl>()
     singleBy<CookieManager, CookieManagerImpl>()
 }
