@@ -10,7 +10,7 @@ import tgo1014.instabox.pickpicture.models.PredictResponse
 
 interface ClarifaiApi {
 
-    @POST("models/aaa03c23b3724a16a56b629203edc62c/versions//outputs")
+    @POST("models/aaa03c23b3724a16a56b629203edc62c/versions/aa9ca48295b37401f8af92ad1af0d91d/outputs")
     @Headers("Content-Type: application/json")
     suspend fun getHashtags(
         @Body base64: PredictRequest,
