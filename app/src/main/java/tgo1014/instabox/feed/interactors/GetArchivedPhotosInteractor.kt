@@ -6,8 +6,9 @@ import tgo1014.instabox.common.network.responses.FeedResponse
 import tgo1014.instabox.feed.models.FeedItem
 import tgo1014.instabox.feed.models.FeedMediaType
 import tgo1014.instabox.feed.models.FeedWrapper
+import javax.inject.Inject
 
-class GetArchivedPhotosInteractor(
+class GetArchivedPhotosInteractor @Inject constructor(
     private val instagramApi: InstagramApi,
 ) : BaseInteractor<FeedWrapper> {
 

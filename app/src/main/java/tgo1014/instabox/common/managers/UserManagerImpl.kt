@@ -2,8 +2,11 @@ package tgo1014.instabox.common.managers
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import javax.inject.Inject
 
-class UserManagerImpl(private val sharedPreferences: SharedPreferences) : UserManager {
+class UserManagerImpl @Inject constructor(
+    private val sharedPreferences: SharedPreferences,
+) : UserManager {
 
     override val isUserLogged: Boolean
         get() = sharedPreferences.getString(PREF_TOKEN, null) != null

@@ -3,6 +3,7 @@ package tgo1014.instabox.login
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.VisibleForTesting
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +13,7 @@ import tgo1014.instabox.common.managers.CookieManager
 import tgo1014.instabox.common.managers.UserManager
 import tgo1014.instabox.common.utils.substringBetween
 
-class LoginViewModel(
+class LoginViewModel @ViewModelInject constructor(
     private val userManager: UserManager,
     private val cookieManager: CookieManager,
 ) : ViewModel() {

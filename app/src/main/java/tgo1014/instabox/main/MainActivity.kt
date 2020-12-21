@@ -1,20 +1,23 @@
 package tgo1014.instabox.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import tgo1014.instabox.R
 import tgo1014.instabox.feed.FeedFragment
 import tgo1014.instabox.info.InfoFragment
 import tgo1014.instabox.pickpicture.PickPictureFragment
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private val viewModel: MainViewModel by viewModel()
+    // private val binding by viewBinding(MainActivityBinding::inflate)
+    private val viewModel: MainViewModel by viewModels()
     var onHashtagFragmentResumedListener: (() -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +62,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         var current = findFragmentByTag(tag)
         beginTransaction()
             .apply {
-                //Hide the current fragment
+                // Hide the current fragment
                 primaryNavigationFragment?.let { hide(it) }
-                //Check if current fragment exists in fragmentManager
+                // Check if current fragment exists in fragmentManager
                 if (current == null) {
                     current = newFrag
                     add(containerId, newFrag, tag)

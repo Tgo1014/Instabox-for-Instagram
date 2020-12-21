@@ -3,8 +3,9 @@ package tgo1014.instabox.feed.interactors
 import tgo1014.instabox.common.BaseInteractor
 import tgo1014.instabox.common.network.InstagramApi
 import tgo1014.instabox.feed.models.FeedItem
+import javax.inject.Inject
 
-class ActionOnFeedItemInteractor(
+class ActionOnFeedItemInteractor @Inject constructor(
     private val instagramApi: InstagramApi,
 ) : BaseInteractor<Unit> {
 

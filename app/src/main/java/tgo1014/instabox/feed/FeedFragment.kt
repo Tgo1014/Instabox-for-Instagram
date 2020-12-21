@@ -5,13 +5,14 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.peekandpop.shalskar.peekandpop.PeekAndPop
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_action.view.*
 import kotlinx.android.synthetic.main.feed_fragment.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.GridSpacingItemDecoration
 import tgo1014.instabox.common.utils.openActivity
@@ -21,6 +22,7 @@ import tgo1014.instabox.feed.models.FeedItem
 import tgo1014.instabox.feed.models.FeedState
 import tgo1014.instabox.login.LoginActivity
 
+@AndroidEntryPoint
 class FeedFragment : Fragment(R.layout.feed_fragment) {
 
     private val isArchive
@@ -28,7 +30,7 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
 
     private var actionDialog: AlertDialog? = null
     private var actionDialogView: View? = null
-    private val viewModel: FeedViewModel by viewModel()
+    private val viewModel: FeedViewModel by viewModels()
     private val layoutManager by lazy { GridLayoutManager(requireContext(), 3) }
     private val adapter by lazy {
         FeedAdapter(

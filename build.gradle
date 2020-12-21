@@ -6,11 +6,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.koin:koin-gradle-plugin:2.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.4'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.30-alpha'
     }
 }
 
@@ -25,5 +26,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-apply plugin: 'koin'

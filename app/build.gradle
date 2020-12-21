@@ -4,10 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.1'
+    buildToolsVersion '30.0.2'
     defaultConfig {
         applicationId 'tgo1014.instabox'
         minSdkVersion 21
@@ -39,7 +40,7 @@ android {
             ext.alwaysUpdateBuildId = false
             ext.enableCrashlytics = false
             ext.enableStability = false
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
@@ -110,12 +111,12 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
-    // Koin
-    implementation 'org.koin:koin-android:2.2.0'
-    implementation 'org.koin:koin-androidx-scope:2.2.0'
-    implementation 'org.koin:koin-androidx-viewmodel:2.2.0'
-    implementation 'org.koin:koin-androidx-fragment:2.2.0'
-    implementation 'org.koin:koin-androidx-ext:2.2.0'
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.30-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.30-alpha"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+
 
     // Moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.11.0'

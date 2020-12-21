@@ -1,6 +1,7 @@
 package tgo1014.instabox.main
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import tgo1014.instabox.common.managers.UserManager
 
-class MainViewModel(val userManager: UserManager) : ViewModel()
+class MainViewModel @ViewModelInject constructor(val userManager: UserManager) : ViewModel()

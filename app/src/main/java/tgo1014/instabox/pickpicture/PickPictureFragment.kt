@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.pick_picture_fragment.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.toast
 import tgo1014.instabox.main.MainActivity
@@ -17,14 +17,15 @@ import tgo1014.instabox.pickpicture.models.PickPictureState
 import tgo1014.instabox.pickpicture.models.Prediction
 import java.io.File
 
+@AndroidEntryPoint
 class PickPictureFragment : Fragment(R.layout.pick_picture_fragment) {
 
-    private val viewModel: PickPictureViewModel by viewModel()
+    private val viewModel: PickPictureViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
-        viewModel.state.observe(viewLifecycleOwner, Observer { handleState(it) })
+        viewModel.state.observe(viewLifecycleOwner, ::handleState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

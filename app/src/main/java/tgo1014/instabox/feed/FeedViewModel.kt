@@ -1,5 +1,6 @@
 package tgo1014.instabox.feed
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import tgo1014.instabox.common.CoroutinesDispatcherProvider
@@ -14,7 +15,7 @@ import tgo1014.instabox.feed.models.FeedState
 import tgo1014.instabox.pickpicture.models.Errors
 import timber.log.Timber
 
-class FeedViewModel(
+class FeedViewModel @ViewModelInject constructor(
     private val userManager: UserManager,
     private val getArchivedPhotosInteractor: GetArchivedPhotosInteractor,
     private val actionOnFeedItemInteractor: ActionOnFeedItemInteractor,

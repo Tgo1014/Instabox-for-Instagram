@@ -3,16 +3,18 @@ package tgo1014.instabox.login
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_login.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.toast
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
-    private val viewModel: LoginViewModel by viewModel()
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,8 +7,9 @@ import tgo1014.instabox.common.network.responses.FeedResponse
 import tgo1014.instabox.feed.models.FeedItem
 import tgo1014.instabox.feed.models.FeedMediaType
 import tgo1014.instabox.feed.models.FeedWrapper
+import javax.inject.Inject
 
-class GetSelfFeedInteractor(
+class GetSelfFeedInteractor @Inject constructor(
     private val instagramApi: InstagramApi,
     private val userManager: UserManager,
 ) : BaseInteractor<FeedWrapper> {

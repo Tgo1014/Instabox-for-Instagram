@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.util.Base64
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,7 +25,9 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.nio.charset.Charset
 
-class PickPictureViewModel(private val clarifaiApi: ClarifaiApi) : ViewModel() {
+class PickPictureViewModel @ViewModelInject constructor(
+    private val clarifaiApi: ClarifaiApi,
+) : ViewModel() {
 
     private val _state = MutableLiveData<PickPictureState>()
     val state: LiveData<PickPictureState>
