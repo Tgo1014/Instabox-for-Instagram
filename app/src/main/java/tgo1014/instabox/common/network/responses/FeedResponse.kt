@@ -16,7 +16,7 @@ data class FeedResponse(
     val nextMaxId: String? = null,
     @Json(name = "num_results")
     val numResults: Long? = null,
-    val status: String? = null
+    val status: String? = null,
 ) {
     @JsonClass(generateAdapter = true)
     data class Item(
@@ -105,7 +105,7 @@ data class FeedResponse(
         val videoVersions: List<VideoVersion?>? = null,
         @Json(name = "view_count")
         val viewCount: Double? = null,
-        val visibility: String? = null
+        val visibility: String? = null,
     ) {
         @JsonClass(generateAdapter = true)
         data class Caption(
@@ -129,7 +129,7 @@ data class FeedResponse(
             val type: Long? = null,
             val user: User? = null,
             @Json(name = "user_id")
-            val userId: Long? = null
+            val userId: Long? = null,
         ) {
             @JsonClass(generateAdapter = true)
             data class User(
@@ -160,7 +160,7 @@ data class FeedResponse(
                 val reelAutoArchive: String? = null,
                 @Json(name = "show_insights_terms")
                 val showInsightsTerms: Boolean? = null,
-                val username: String? = null
+                val username: String? = null,
             )
         }
 
@@ -179,23 +179,23 @@ data class FeedResponse(
             val originalHeight: Long? = null,
             @Json(name = "original_width")
             val originalWidth: Long? = null,
-            val pk: Long? = null
+            val pk: Long? = null,
         ) {
             @JsonClass(generateAdapter = true)
             data class FbUserTags(
                 @Json(name = "in")
-                val inX: List<Any?>? = null
+                val inX: List<Any?>? = null,
             )
 
             @JsonClass(generateAdapter = true)
             data class ImageVersions2(
-                val candidates: List<Candidate?>? = null
+                val candidates: List<Candidate?>? = null,
             ) {
                 @JsonClass(generateAdapter = true)
                 data class Candidate(
                     val height: Long? = null,
                     val url: String? = null,
-                    val width: Long? = null
+                    val width: Long? = null,
                 )
             }
         }
@@ -213,24 +213,24 @@ data class FeedResponse(
             val profilePicId: String? = null,
             @Json(name = "profile_pic_url")
             val profilePicUrl: String? = null,
-            val username: String? = null
+            val username: String? = null,
         )
 
         @JsonClass(generateAdapter = true)
         data class FbUserTags(
             @Json(name = "in")
-            val inX: List<Any?>? = null
+            val inX: List<Any?>? = null,
         )
 
         @JsonClass(generateAdapter = true)
         data class ImageVersions2(
-            val candidates: List<Candidate?>? = null
+            val candidates: List<Candidate?>? = null,
         ) {
             @JsonClass(generateAdapter = true)
             data class Candidate(
                 val height: Long? = null,
                 val url: String? = null,
-                val width: Long? = null
+                val width: Long? = null,
             )
         }
 
@@ -247,7 +247,7 @@ data class FeedResponse(
             val name: String? = null,
             val pk: Long? = null,
             @Json(name = "short_name")
-            val shortName: String? = null
+            val shortName: String? = null,
         )
 
         @JsonClass(generateAdapter = true)
@@ -282,7 +282,7 @@ data class FeedResponse(
             val type: Long? = null,
             val user: User? = null,
             @Json(name = "user_id")
-            val userId: Long? = null
+            val userId: Long? = null,
         ) {
             @JsonClass(generateAdapter = true)
             data class User(
@@ -297,7 +297,7 @@ data class FeedResponse(
                 val profilePicId: String? = null,
                 @Json(name = "profile_pic_url")
                 val profilePicUrl: String? = null,
-                val username: String? = null
+                val username: String? = null,
             )
         }
 
@@ -330,7 +330,7 @@ data class FeedResponse(
             val reelAutoArchive: String? = null,
             @Json(name = "show_insights_terms")
             val showInsightsTerms: Boolean? = null,
-            val username: String? = null
+            val username: String? = null,
         )
 
         @JsonClass(generateAdapter = true)
@@ -339,7 +339,7 @@ data class FeedResponse(
             val id: String? = null,
             val type: Int? = null,
             val url: String? = null,
-            val width: Int? = null
+            val width: Int? = null,
         )
     }
 }

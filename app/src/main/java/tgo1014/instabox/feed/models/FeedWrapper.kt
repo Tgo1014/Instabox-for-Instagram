@@ -4,5 +4,5 @@ data class FeedWrapper(
     val feedItems: List<FeedItem>,
     val nextPageMaxId: String? = null,
     val isArchive: Boolean,
-    val moreResultAvailable: Boolean
+    val moreResultAvailable: Boolean,
 )

@@ -20,7 +20,6 @@ class UserManagerImpl(private val sharedPreferences: SharedPreferences) : UserMa
         get() = sharedPreferences.getString(PREF_SESSIONID, null) ?: ""
         set(value) = sharedPreferences.edit { putString(PREF_SESSIONID, value) }
 
-
     override fun getFormattedUserAgent() = "ds_user_id=$userId; sessionid=$sessionId;"
 
     companion object {
@@ -28,5 +27,4 @@ class UserManagerImpl(private val sharedPreferences: SharedPreferences) : UserMa
         const val PREF_USERID = "PREF_USERID"
         const val PREF_SESSIONID = "PREF_SESSIONID"
     }
-
 }

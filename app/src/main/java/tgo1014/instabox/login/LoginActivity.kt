@@ -10,7 +10,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.toast
 
-
 class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
     private val viewModel: LoginViewModel by viewModel()
@@ -44,7 +43,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
             }
             is LoginState.Error -> toast(getString(R.string.error))
         }
-
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -55,5 +53,4 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
             loadUrl(viewModel.instaLoginUrl)
         }
     }
-
 }

@@ -1,12 +1,14 @@
 package tgo1014.instabox.common.di
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import org.koin.dsl.module
 import org.koin.experimental.builder.singleBy
-import tgo1014.instabox.common.managers.*
+import tgo1014.instabox.common.managers.CookieManager
+import tgo1014.instabox.common.managers.CookieManagerImpl
+import tgo1014.instabox.common.managers.UserManager
+import tgo1014.instabox.common.managers.UserManagerImpl
 
 val storageModule = module {
     single { android.webkit.CookieManager.getInstance() }

@@ -1,6 +1,5 @@
 package tgo1014.instabox.feed.interactors
 
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -76,5 +75,4 @@ class GetArchivedPhotosInteractorTest {
         // Then FeedItems Should Be Empty
         assert(result.feedItems.isEmpty())
     }
-
 }

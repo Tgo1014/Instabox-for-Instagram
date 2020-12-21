@@ -5,7 +5,7 @@ import tgo1014.instabox.common.network.InstagramApi
 import tgo1014.instabox.feed.models.FeedItem
 
 class ActionOnFeedItemInteractor(
-    private val instagramApi: InstagramApi
+    private val instagramApi: InstagramApi,
 ) : BaseInteractor<Unit> {
 
     var input: Input? = null
@@ -20,5 +20,4 @@ class ActionOnFeedItemInteractor(
             input?.feedItem?.id ?: ""
         )
     }
-
 }

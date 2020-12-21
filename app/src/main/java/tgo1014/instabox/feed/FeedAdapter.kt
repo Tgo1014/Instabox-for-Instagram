@@ -27,7 +27,7 @@ typealias OnSelected = (hasSelectedItems: Boolean) -> Unit
 class FeedAdapter(
     private val peekAndPop: PeekAndPop,
     private val onLastItemReached: OnLastItemReached,
-    private val hasSelectedItems: OnSelected
+    private val hasSelectedItems: OnSelected,
 ) : ListAdapter<FeedItem, FeedAdapter.FeedViewHolder>(diffUtil) {
 
     private val random = Random
@@ -78,7 +78,6 @@ class FeedAdapter(
                 hasSelectedItems.invoke(true)
             }
         }
-
     }
 
     enum class ViewType { MEDIA, LOADING }
@@ -161,7 +160,6 @@ class FeedAdapter(
             })
         }
     }
-
 
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<FeedItem>() {

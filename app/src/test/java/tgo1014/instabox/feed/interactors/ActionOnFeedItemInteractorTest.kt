@@ -8,7 +8,11 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.*
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.ExpectedException
 import retrofit2.HttpException
 import tgo1014.instabox.TestHelper
@@ -16,7 +20,6 @@ import tgo1014.instabox.TestHelper.fakeFeedItem
 import tgo1014.instabox.TestHelper.generateRetrofit
 import tgo1014.instabox.TestHelper.setResponse
 import tgo1014.instabox.common.network.InstagramApi
-
 
 @ExperimentalCoroutinesApi
 class ActionOnFeedItemInteractorTest {
@@ -85,5 +88,4 @@ class ActionOnFeedItemInteractorTest {
         thrown.expect(HttpException::class.java)
         runBlocking { interactor.execute() }
     }
-
 }

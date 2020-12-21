@@ -13,14 +13,13 @@ import tgo1014.instabox.feed.models.FeedItem
 import tgo1014.instabox.feed.models.FeedState
 import tgo1014.instabox.pickpicture.models.Errors
 import timber.log.Timber
-import java.lang.Exception
 
 class FeedViewModel(
     private val userManager: UserManager,
     private val getArchivedPhotosInteractor: GetArchivedPhotosInteractor,
     private val actionOnFeedItemInteractor: ActionOnFeedItemInteractor,
     private val getSelfFeedInteractor: GetSelfFeedInteractor,
-    private val dispatcherProvider: CoroutinesDispatcherProvider
+    private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel(), LifecycleObserver {
 
     private val _state = MutableLiveData<FeedState>()
@@ -141,7 +140,7 @@ class FeedViewModel(
     private fun performFeedItemAction(
         feedItem: FeedItem,
         onSuccess: () -> Unit,
-        onError: () -> Unit
+        onError: () -> Unit,
     ) = tryOnIO({
         actionOnFeedItemInteractor.input = ActionOnFeedItemInteractor.Input(feedItem)
         actionOnFeedItemInteractor.execute()
@@ -150,5 +149,4 @@ class FeedViewModel(
         Timber.d(it)
         onError()
     })
-
 }

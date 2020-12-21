@@ -1,6 +1,10 @@
 package tgo1014.instabox.common.network
 
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 import tgo1014.instabox.common.network.responses.FeedResponse
 
 interface InstagramApi {
@@ -8,7 +12,7 @@ interface InstagramApi {
     @POST("feed/user/{userId}")
     suspend fun gefFeed(
         @Path("userId") userId: String? = null,
-        @Query("max_id") maxId: String? = null
+        @Query("max_id") maxId: String? = null,
     ): FeedResponse
 
     @POST("feed/only_me_feed")
@@ -19,7 +23,6 @@ interface InstagramApi {
     suspend fun changeMediaVisibility(
         @Path("mediaId") mediaId: String,
         @Path("action") action: String,
-        @Field("media_id") mediaIdForm: String
+        @Field("media_id") mediaIdForm: String,
     ): FeedResponse
-
 }

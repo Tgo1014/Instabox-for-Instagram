@@ -8,8 +8,9 @@ sealed class FeedState {
     class FeedActionRunning(
         val actionAlreadyDoneSize: Int,
         val itemsToPerfomeActionSize: Int,
-        val lastRemovedItem: FeedItem? = null
+        val lastRemovedItem: FeedItem? = null,
     ) : FeedState()
+
     class FeedItemActionSuccess(vararg val feedItem: FeedItem) : FeedState()
     class Error(val e: Exception) : FeedState()
 }

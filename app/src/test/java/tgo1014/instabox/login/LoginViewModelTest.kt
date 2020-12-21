@@ -88,5 +88,4 @@ class LoginViewModelTest {
         // Then State Should Be UserLoggedSuccessfully
         verify(viewStateObserver).onChanged(LoginState.UserLoggedSuccessfully)
     }
-
 }

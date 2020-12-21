@@ -14,5 +14,4 @@ enum class FeedMediaType(val id: Int) {
             return values().firstOrNull { it.id.toLong() == id } ?: UNKNOWN
         }
     }
-
 }

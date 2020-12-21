@@ -1,14 +1,12 @@
 package tgo1014.instabox.pickpicture.models
 
-
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
-
 
 @Keep
 data class PredictResponse(
     val outputs: List<Output?>? = null,
-    val status: Status? = null
+    val status: Status? = null,
 ) {
     @Keep
     data class Output(
@@ -18,11 +16,11 @@ data class PredictResponse(
         val id: String? = null,
         val input: Input? = null,
         val model: Model? = null,
-        val status: Status? = null
+        val status: Status? = null,
     ) {
         @Keep
         data class Data(
-            val concepts: List<Concept?>? = null
+            val concepts: List<Concept?>? = null,
         ) {
             @Keep
             data class Concept(
@@ -30,23 +28,23 @@ data class PredictResponse(
                 val appId: String? = null,
                 val id: String? = null,
                 val name: String? = null,
-                val value: Double? = null
+                val value: Double? = null,
             )
         }
 
         @Keep
         data class Input(
             val `data`: Data? = null,
-            val id: String? = null
+            val id: String? = null,
         ) {
             @Keep
             data class Data(
-                val image: Image? = null
+                val image: Image? = null,
             ) {
                 @Keep
                 data class Image(
                     val base64: String? = null,
-                    val url: String? = null
+                    val url: String? = null,
                 )
             }
         }
@@ -64,7 +62,7 @@ data class PredictResponse(
             val modelVersion: ModelVersion? = null,
             val name: String? = null,
             @Json(name = "output_info")
-            val outputInfo: OutputInfo? = null
+            val outputInfo: OutputInfo? = null,
         ) {
             @Keep
             data class ModelVersion(
@@ -73,12 +71,12 @@ data class PredictResponse(
                 val id: String? = null,
                 val status: Status? = null,
                 @Json(name = "worker_id")
-                val workerId: String? = null
+                val workerId: String? = null,
             ) {
                 @Keep
                 data class Status(
                     val code: Int? = null,
-                    val description: String? = null
+                    val description: String? = null,
                 )
             }
 
@@ -87,14 +85,14 @@ data class PredictResponse(
                 val message: String? = null,
                 val type: String? = null,
                 @Json(name = "type_ext")
-                val typeExt: String? = null
+                val typeExt: String? = null,
             )
         }
 
         @Keep
         data class Status(
             val code: Int? = null,
-            val description: String? = null
+            val description: String? = null,
         )
     }
 
@@ -103,7 +101,7 @@ data class PredictResponse(
         val code: Int? = null,
         val description: String? = null,
         @Json(name = "req_id")
-        val reqId: String? = null
+        val reqId: String? = null,
     )
 
     fun toPredictionList(): List<Prediction> {

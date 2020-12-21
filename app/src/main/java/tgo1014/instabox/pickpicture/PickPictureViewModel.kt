@@ -24,14 +24,18 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.nio.charset.Charset
 
-
 class PickPictureViewModel(private val clarifaiApi: ClarifaiApi) : ViewModel() {
 
     private val _state = MutableLiveData<PickPictureState>()
     val state: LiveData<PickPictureState>
         get() = _state
 
-    fun imageSelected(context: Context, cacheDir: File, contextResolver: ContentResolver, data: Intent?) {
+    fun imageSelected(
+        context: Context,
+        cacheDir: File,
+        contextResolver: ContentResolver,
+        data: Intent?,
+    ) {
 
         stateUploading()
 
@@ -60,7 +64,6 @@ class PickPictureViewModel(private val clarifaiApi: ClarifaiApi) : ViewModel() {
                 launchOnMain { stateErrorUnableToGetImage() }
             }
         )
-
     }
 
     private fun copyStreamToFile(inputStream: InputStream, outputFile: File) {
@@ -97,5 +100,4 @@ class PickPictureViewModel(private val clarifaiApi: ClarifaiApi) : ViewModel() {
                 Errors.UnableToGetImageError
             )
     }
-
 }

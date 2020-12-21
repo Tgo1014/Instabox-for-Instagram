@@ -7,6 +7,5 @@ interface UserManager {
     var userId: String
     var sessionId: String
 
-    fun getFormattedUserAgent() : String
-
+    fun getFormattedUserAgent(): String
 }

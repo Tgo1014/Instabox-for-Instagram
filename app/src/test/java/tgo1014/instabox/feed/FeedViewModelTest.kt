@@ -97,5 +97,4 @@ class FeedViewModelTest {
         assert(states[2] is FeedState.FeedSuccess)
         assert((states[2] as FeedState.FeedSuccess).feedItems == fakeFeedWrappper.feedItems)
     }
-
 }

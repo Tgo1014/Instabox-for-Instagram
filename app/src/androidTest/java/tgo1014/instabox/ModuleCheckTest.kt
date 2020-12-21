@@ -19,5 +19,4 @@ class ModuleCheckTest : AutoCloseKoinTest() {
         androidContext(InstrumentationRegistry.getInstrumentation().context)
         modules(viewModelModule, networkModule, storageModule, interactorModule)
     }
-
 }

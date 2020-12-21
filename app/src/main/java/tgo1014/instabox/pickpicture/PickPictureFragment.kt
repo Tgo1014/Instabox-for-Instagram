@@ -17,7 +17,6 @@ import tgo1014.instabox.pickpicture.models.PickPictureState
 import tgo1014.instabox.pickpicture.models.Prediction
 import java.io.File
 
-
 class PickPictureFragment : Fragment(R.layout.pick_picture_fragment) {
 
     private val viewModel: PickPictureViewModel by viewModel()
@@ -89,5 +88,4 @@ class PickPictureFragment : Fragment(R.layout.pick_picture_fragment) {
         private const val IMAGE_PICK_REQUEST = 777
         fun newInstance() = PickPictureFragment()
     }
-
 }

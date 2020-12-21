@@ -3,14 +3,18 @@ package tgo1014.instabox.login
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ViewModel
 import tgo1014.instabox.common.managers.CookieManager
 import tgo1014.instabox.common.managers.UserManager
 import tgo1014.instabox.common.utils.substringBetween
 
 class LoginViewModel(
     private val userManager: UserManager,
-    private val cookieManager: CookieManager
+    private val cookieManager: CookieManager,
 ) : ViewModel() {
 
     private val _state = MutableLiveData<LoginState>()
@@ -64,5 +68,4 @@ class LoginViewModel(
     private fun stateHasToLogin() {
         _state.value = LoginState.UserHasToLogin
     }
-
 }

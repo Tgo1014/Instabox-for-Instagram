@@ -26,5 +26,4 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
     companion object {
         fun newInstance() = InfoFragment()
     }
-
 }

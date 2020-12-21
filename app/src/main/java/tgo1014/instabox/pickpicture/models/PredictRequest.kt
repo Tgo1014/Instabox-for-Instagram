@@ -3,7 +3,6 @@ package tgo1014.instabox.pickpicture.models
 import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
 
-
 @Keep
 @JsonClass(generateAdapter = true)
 data class PredictRequest(val inputs: List<Input>) {

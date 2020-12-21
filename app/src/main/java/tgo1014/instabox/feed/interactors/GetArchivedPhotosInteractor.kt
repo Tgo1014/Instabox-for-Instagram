@@ -8,7 +8,7 @@ import tgo1014.instabox.feed.models.FeedMediaType
 import tgo1014.instabox.feed.models.FeedWrapper
 
 class GetArchivedPhotosInteractor(
-    private val instagramApi: InstagramApi
+    private val instagramApi: InstagramApi,
 ) : BaseInteractor<FeedWrapper> {
 
     var input: Input? = null
@@ -60,5 +60,4 @@ class GetArchivedPhotosInteractor(
         item.carouselMedia?.firstOrNull()?.imageVersions2?.candidates?.minBy {
             it?.height ?: 0
         }?.url
-
 }

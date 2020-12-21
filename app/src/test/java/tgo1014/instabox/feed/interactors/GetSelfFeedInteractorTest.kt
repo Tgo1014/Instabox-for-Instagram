@@ -1,6 +1,5 @@
 package tgo1014.instabox.feed.interactors
 
-
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
@@ -70,5 +69,4 @@ class GetSelfFeedInteractorTest {
         thrown.expect(HttpException::class.java)
         runBlocking { interactor.execute() }
     }
-
 }

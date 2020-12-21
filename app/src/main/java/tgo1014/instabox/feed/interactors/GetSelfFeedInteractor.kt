@@ -10,7 +10,7 @@ import tgo1014.instabox.feed.models.FeedWrapper
 
 class GetSelfFeedInteractor(
     private val instagramApi: InstagramApi,
-    private val userManager: UserManager
+    private val userManager: UserManager,
 ) : BaseInteractor<FeedWrapper> {
 
     var input: Input? = null
@@ -64,5 +64,4 @@ class GetSelfFeedInteractor(
         item.carouselMedia?.firstOrNull()?.imageVersions2?.candidates?.minBy {
             it?.height ?: 0
         }?.url
-
 }

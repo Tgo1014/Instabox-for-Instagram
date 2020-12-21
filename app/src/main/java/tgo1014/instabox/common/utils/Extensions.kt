@@ -30,7 +30,6 @@ import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-
 fun Fragment.toast(message: String) {
     requireContext().toast(message)
 }
@@ -42,22 +41,22 @@ fun Context.toast(message: String) {
 fun ViewModel.launch(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ) = viewModelScope.launch(context, start, block)
 
 fun ViewModel.launchOnIO(
     start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ) = viewModelScope.launch(Dispatchers.IO, start, block)
 
 fun ViewModel.launchOnMain(
     start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ) = viewModelScope.launch(Dispatchers.Main, start, block)
 
 fun ViewModel.tryOnIO(
     block: suspend CoroutineScope.() -> Unit,
-    exceptionHandler: (e: Exception) -> Unit
+    exceptionHandler: (e: Exception) -> Unit,
 ) {
     launchOnIO {
         try {

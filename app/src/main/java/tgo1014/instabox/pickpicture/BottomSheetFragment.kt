@@ -20,13 +20,12 @@ import tgo1014.instabox.common.utils.toast
 import tgo1014.instabox.pickpicture.models.Prediction
 import java.io.File
 
-
 typealias OnHashtagClickedListener = (hashtag: String) -> Unit
 
 class BottomSheetFragment(
     private val predictionList: List<Prediction>,
     private val image: File,
-    private val onHashTagClicked: OnHashtagClickedListener
+    private val onHashTagClicked: OnHashtagClickedListener,
 ) : BottomSheetDialogFragment() {
 
     private val clipboardManager
@@ -35,7 +34,7 @@ class BottomSheetFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View = inflater.inflate(R.layout.bottomsheet_result, container)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,5 +80,4 @@ class BottomSheetFragment(
         // Broadcast the Intent.
         startActivity(Intent.createChooser(share, getString(R.string.share_to)))
     }
-
 }

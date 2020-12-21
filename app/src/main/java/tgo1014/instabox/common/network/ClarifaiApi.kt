@@ -14,7 +14,6 @@ interface ClarifaiApi {
     @Headers("Content-Type: application/json")
     suspend fun getHashtags(
         @Body base64: PredictRequest,
-        @Header("Authorization") auth: String = BuildConfig.KEY
+        @Header("Authorization") auth: String = BuildConfig.KEY,
     ): PredictResponse
-
 }

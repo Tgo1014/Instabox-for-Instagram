@@ -27,7 +27,6 @@ import tgo1014.instabox.feed.models.FeedWrapper
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
-
 object TestHelper {
 
     private val moshi = Moshi.Builder()
@@ -101,7 +100,7 @@ object TestHelper {
 
     @ExperimentalCoroutinesApi
     fun Any.provideFakeCoroutinesDispatcherProvider(
-        dispatcher: TestCoroutineDispatcher?
+        dispatcher: TestCoroutineDispatcher?,
     ): CoroutinesDispatcherProvider {
         val sharedTestCoroutineDispatcher = TestCoroutineDispatcher()
         return CoroutinesDispatcherProvider(
@@ -117,7 +116,7 @@ object TestHelper {
 
     class LifecycleManagedCoroutineScope(
         val lifecycleCoroutineScope: LifecycleCoroutineScope,
-        override val coroutineContext: CoroutineContext
+        override val coroutineContext: CoroutineContext,
     ) : ManagedCoroutineScope {
         override fun launch(block: suspend CoroutineScope.() -> Unit): Job =
             lifecycleCoroutineScope.launchWhenStarted(block)
@@ -132,5 +131,4 @@ object TestHelper {
             }
         }
     }
-
 }

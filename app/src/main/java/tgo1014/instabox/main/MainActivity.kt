@@ -79,5 +79,4 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             .setReorderingAllowed(true)
             .commitNow()
     }
-
 }

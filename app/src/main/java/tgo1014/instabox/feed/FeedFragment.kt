@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.peekandpop.shalskar.peekandpop.PeekAndPop
 import kotlinx.android.synthetic.main.dialog_action.view.*
 import kotlinx.android.synthetic.main.feed_fragment.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.GridSpacingItemDecoration
 import tgo1014.instabox.common.utils.openActivity
@@ -22,7 +20,6 @@ import tgo1014.instabox.common.utils.toast
 import tgo1014.instabox.feed.models.FeedItem
 import tgo1014.instabox.feed.models.FeedState
 import tgo1014.instabox.login.LoginActivity
-
 
 class FeedFragment : Fragment(R.layout.feed_fragment) {
 
@@ -168,7 +165,6 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
         updateDialogValue()
 
         actionDialog?.show()
-
     }
 
     companion object {
@@ -178,5 +174,4 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
             return FeedFragment().apply { arguments = b }
         }
     }
-
 }
