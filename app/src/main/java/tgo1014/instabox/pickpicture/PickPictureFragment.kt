@@ -9,9 +9,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.pick_picture_fragment.*
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.toast
+import tgo1014.instabox.common.utils.viewBinding
+import tgo1014.instabox.databinding.PickPictureFragmentBinding
 import tgo1014.instabox.main.MainActivity
 import tgo1014.instabox.pickpicture.models.PickPictureState
 import tgo1014.instabox.pickpicture.models.Prediction
@@ -20,6 +21,7 @@ import java.io.File
 @AndroidEntryPoint
 class PickPictureFragment : Fragment(R.layout.pick_picture_fragment) {
 
+    private val binding by viewBinding(PickPictureFragmentBinding::bind)
     private val viewModel: PickPictureViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,16 +65,18 @@ class PickPictureFragment : Fragment(R.layout.pick_picture_fragment) {
     }
 
     private fun handleViewLoading(isLoading: Boolean) {
-        pickPicProgress.isVisible = isLoading
-        pickPickProgressTv.isVisible = isLoading
-        pickPicLottie.isVisible = !isLoading
-        pickPicFab.isEnabled = !isLoading
+        with(binding) {
+            pickPicProgress.isVisible = isLoading
+            pickPickProgressTv.isVisible = isLoading
+            pickPicLottie.isVisible = !isLoading
+            pickPicFab.isEnabled = !isLoading
+        }
     }
 
     private fun setListeners() {
-        pickPicFab.setOnClickListener { startImagePicker() }
+        binding.pickPicFab.setOnClickListener { startImagePicker() }
         (activity as? MainActivity)?.onHashtagFragmentResumedListener = {
-            pickPicLottie.playAnimation()
+            binding.pickPicLottie.playAnimation()
         }
     }
 

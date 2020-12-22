@@ -13,10 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottomsheet_result.*
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.addHashtags
 import tgo1014.instabox.common.utils.toast
+import tgo1014.instabox.common.utils.viewBinding
+import tgo1014.instabox.databinding.BottomsheetResultBinding
 import tgo1014.instabox.pickpicture.models.Prediction
 import java.io.File
 
@@ -27,6 +28,8 @@ class BottomSheetFragment(
     private val image: File,
     private val onHashTagClicked: OnHashtagClickedListener,
 ) : BottomSheetDialogFragment() {
+
+    private val binding by viewBinding(BottomsheetResultBinding::bind)
 
     private val clipboardManager
         get() = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
@@ -40,22 +43,22 @@ class BottomSheetFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        bottomsheetResultTv.addHashtags(predictionList, onHashTagClicked)
+        binding.bottomsheetResultTv.addHashtags(predictionList, onHashTagClicked)
         setListeners()
     }
 
     private fun setListeners() {
-        bottomsheetResultBtnInsta.setOnClickListener {
+        binding.bottomsheetResultBtnInsta.setOnClickListener {
             shareToInsta(image)
         }
-        bottomsheetResultBtnCopy.setOnClickListener {
+        binding.bottomsheetResultBtnCopy.setOnClickListener {
             clipboardManager.setPrimaryClip(
                 ClipData.newPlainText(
                     "hashtags",
-                    bottomsheetResultTv.text
+                    binding.bottomsheetResultTv.text
                 )
             )
-            bottomsheetResultBtnInsta.isEnabled = true
+            binding.bottomsheetResultBtnInsta.isEnabled = true
             toast("Copied")
         }
     }

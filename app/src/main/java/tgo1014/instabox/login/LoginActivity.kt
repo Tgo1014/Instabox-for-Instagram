@@ -5,20 +5,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_login.*
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.toast
+import tgo1014.instabox.common.utils.viewBinding
+import tgo1014.instabox.databinding.ActivityLoginBinding
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
+    private val binding by viewBinding(ActivityLoginBinding::inflate)
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.state.observe(this, Observer { handleState(it) })
+        setContentView(binding.root)
+        viewModel.state.observe(this, ::handleState)
         viewModel.verifyIfUserIsLogged()
         setupToolbar()
     }
@@ -31,7 +33,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(loginToolbar)
+        setSupportActionBar(binding.loginToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
@@ -49,8 +51,13 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebview() {
-        loginWebview.apply {
+        binding.loginWebview.apply {
             settings.javaScriptEnabled = true
+            getSettings().setBuiltInZoomControls(false);
+            getSettings().setSupportZoom(false);
+            getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            getSettings().setAllowFileAccess(true);
+            getSettings().setDomStorageEnabled(true);
             webViewClient = viewModel.webviewClient
             loadUrl(viewModel.instaLoginUrl)
         }

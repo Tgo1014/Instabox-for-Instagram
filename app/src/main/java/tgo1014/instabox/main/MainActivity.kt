@@ -7,8 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import tgo1014.instabox.R
+import tgo1014.instabox.common.utils.viewBinding
+import tgo1014.instabox.databinding.ActivityMainBinding
 import tgo1014.instabox.feed.FeedFragment
 import tgo1014.instabox.info.InfoFragment
 import tgo1014.instabox.pickpicture.PickPictureFragment
@@ -16,18 +17,19 @@ import tgo1014.instabox.pickpicture.PickPictureFragment
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    // private val binding by viewBinding(MainActivityBinding::inflate)
+    private val binding by viewBinding(ActivityMainBinding::inflate)
     private val viewModel: MainViewModel by viewModels()
     var onHashtagFragmentResumedListener: (() -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         setupListeners()
         replaceFeedFrag()
     }
 
     private fun setupListeners() {
-        mainBottomNavigation.setOnNavigationItemSelectedListener {
+        binding.mainBottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.menuBottomNavArchive -> replaceArchiveFrag()
                 R.id.menuBottomNavFeed -> replaceFeedFrag()

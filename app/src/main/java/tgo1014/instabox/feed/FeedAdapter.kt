@@ -3,6 +3,7 @@ package tgo1014.instabox.feed
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.DiffUtil
@@ -10,12 +11,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.peekandpop.shalskar.peekandpop.PeekAndPop
 import com.peekandpop.shalskar.peekandpop.PeekAndPop.OnHoldAndReleaseListener
-import kotlinx.android.synthetic.main.item_feed.view.*
-import kotlinx.android.synthetic.main.peek_view.view.*
 import okhttp3.internal.toLongOrDefault
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.load
 import tgo1014.instabox.common.utils.removeAndVerifyIfEmpty
+import tgo1014.instabox.databinding.ItemFeedBinding
+import tgo1014.instabox.databinding.ItemFeedLoadingBinding
 import tgo1014.instabox.feed.models.FeedItem
 import tgo1014.instabox.feed.models.FeedMediaType
 import timber.log.Timber
@@ -28,81 +29,90 @@ class FeedAdapter(
     private val peekAndPop: PeekAndPop,
     private val onLastItemReached: OnLastItemReached,
     private val hasSelectedItems: OnSelected,
-) : ListAdapter<FeedItem, FeedAdapter.FeedViewHolder>(diffUtil) {
+) : ListAdapter<FeedItem, RecyclerView.ViewHolder>(diffUtil) {
 
     private val random = Random
     val selectedIdsList = mutableListOf<FeedItem>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (ViewType.values()[viewType]) {
+            ViewType.MEDIA -> FeedViewHolder(
+                ItemFeedBinding.inflate(LayoutInflater.from(parent.context)).root
+            )
+            ViewType.LOADING -> LoadingViewHolder(
+                ItemFeedLoadingBinding.inflate(LayoutInflater.from(parent.context)).root
+            )
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        peekAndPop.addLongClickView(holder.itemView, holder.adapterPosition)
+        setupPeekAndPopHoldAndRelease()
+        when (holder) {
+            is FeedViewHolder -> holder.bind(getItem(holder.adapterPosition))
+        }
+        if (position >= itemCount - 1) {
+            onLastItemReached()
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (getItem(position).id == "") ViewType.LOADING.ordinal else ViewType.MEDIA.ordinal
+    }
 
     override fun getItemId(position: Int): Long {
         return currentList[position].id.toLongOrDefault(random.nextLong())
     }
 
+    inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
     inner class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val binding = ItemFeedBinding.bind(itemView)
+
         fun bind(feedItem: FeedItem) {
-            with(itemView) {
-                itemFeedIvImage?.load(feedItem.thumbUrl)
-                itemFeedIvArchive?.isVisible = feedItem.isArchived
+            with(binding) {
+                itemFeedIvImage.load(feedItem.thumbUrl)
+                itemFeedIvArchive.isVisible = feedItem.isArchived
                 when (feedItem.mediaType) {
-                    FeedMediaType.UNKNOWN -> itemFeedIvType?.isVisible = false
-                    FeedMediaType.PHOTO -> itemFeedIvType?.isVisible = false
+                    FeedMediaType.UNKNOWN -> itemFeedIvType.isVisible = false
+                    FeedMediaType.PHOTO -> itemFeedIvType.isVisible = false
                     FeedMediaType.VIDEO -> {
-                        itemFeedIvType?.setImageResource(R.drawable.ic_play)
-                        itemFeedIvType?.isVisible = true
+                        itemFeedIvType.setImageResource(R.drawable.ic_play)
+                        itemFeedIvType.isVisible = true
                     }
                     FeedMediaType.ALBUM -> {
-                        itemFeedIvType?.setImageResource(R.drawable.ic_album)
-                        itemFeedIvType?.isVisible = true
+                        itemFeedIvType.setImageResource(R.drawable.ic_album)
+                        itemFeedIvType.isVisible = true
                     }
                 }
                 // On recycling verify status
                 if (selectedIdsList.any { it == feedItem }) {
                     itemView.setPadding(20)
-                    itemFeedIvSelection?.isVisible = true
+                    itemFeedIvSelection.isVisible = true
                 } else {
-                    itemFeedIvSelection?.isVisible = false
+                    itemFeedIvSelection.isVisible = false
                     itemView.setPadding(0)
                 }
-                setOnClickListener { handleSelection(feedItem) }
+                root.setOnClickListener { handleSelection(feedItem) }
             }
         }
 
         private fun handleSelection(feedItem: FeedItem) {
             if (selectedIdsList.any { it == feedItem }) {
                 itemView.setPadding(0)
-                itemView.itemFeedIvSelection?.isVisible = false
+                binding.itemFeedIvSelection.isVisible = false
                 hasSelectedItems.invoke(!selectedIdsList.removeAndVerifyIfEmpty(feedItem))
             } else {
                 itemView.setPadding(20)
                 selectedIdsList.add(feedItem)
-                itemView.itemFeedIvSelection?.isVisible = true
+                binding.itemFeedIvSelection.isVisible = true
                 hasSelectedItems.invoke(true)
             }
         }
     }
 
     enum class ViewType { MEDIA, LOADING }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).id == "") ViewType.LOADING.ordinal else ViewType.MEDIA.ordinal
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedAdapter.FeedViewHolder {
-        val viewLayout = when (ViewType.values()[viewType]) {
-            ViewType.MEDIA -> R.layout.item_feed
-            ViewType.LOADING -> R.layout.item_feed_loading
-        }
-        val view = LayoutInflater.from(parent.context).inflate(viewLayout, parent, false)
-        return FeedViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
-        peekAndPop.addLongClickView(holder.itemView, holder.adapterPosition)
-        setupPeekAndPopHoldAndRelease()
-        holder.bind(getItem(holder.adapterPosition))
-        if (position >= itemCount - 1) {
-            onLastItemReached()
-        }
-    }
 
     fun addLoading() {
         addItems(listOf(FeedItem("", "", "", FeedMediaType.UNKNOWN, false)))
@@ -141,7 +151,8 @@ class FeedAdapter(
 
                 override fun onPeek(longClickView: View?, position: Int) {
                     val item = getItem(position)
-                    peekView.peekIvImage.load(item.imageUrl, item.thumbUrl)
+                    val peekIvImage = peekView.findViewById<ImageView>(R.id.peekIvImage)
+                    peekIvImage.load(item.imageUrl, item.thumbUrl)
                     Timber.i("PeekAndPop onPeek")
                 }
             })
