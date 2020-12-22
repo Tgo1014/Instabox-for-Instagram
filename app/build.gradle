@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -135,11 +133,6 @@ dependencies {
 
     // Lottie
     implementation 'com.airbnb.android:lottie:3.5.0'
-
-    // Firebase
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation 'com.google.firebase:firebase-perf:19.0.10'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
 
     // Compression
     implementation 'id.zelory:compressor:3.0.0'
