@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import tgo1014.instabox.BuildConfig
 import tgo1014.instabox.common.network.ClarifaiApi
 import tgo1014.instabox.common.utils.formatToCamelCase
 import tgo1014.instabox.common.utils.launchOnMain
@@ -69,6 +70,14 @@ class PickPictureViewModel @ViewModelInject constructor(
         )
     }
 
+    fun onPickImageClikced() {
+        if (BuildConfig.KEY == "Key") {
+            _state.value = PickPictureState.Error(Errors.InvalidClarifaiKeyError)
+            return
+        }
+        _state.value = PickPictureState.ShowPicker
+    }
+
     private fun copyStreamToFile(inputStream: InputStream, outputFile: File) {
         inputStream.use { input ->
             val outputStream = FileOutputStream(outputFile)
@@ -85,22 +94,14 @@ class PickPictureViewModel @ViewModelInject constructor(
     }
 
     private fun stateUploading() {
-        _state.value =
-            PickPictureState.Uploading
+        _state.value = PickPictureState.Uploading
     }
 
     private fun stateSuccess(response: List<Prediction>, image: File) {
-        _state.value =
-            PickPictureState.Success(
-                response,
-                image
-            )
+        _state.value = PickPictureState.Success(response, image)
     }
 
     private fun stateErrorUnableToGetImage() {
-        _state.value =
-            PickPictureState.Error(
-                Errors.UnableToGetImageError
-            )
+        _state.value = PickPictureState.Error(Errors.UnableToGetImageError)
     }
 }

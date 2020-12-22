@@ -147,7 +147,7 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
                     feedFabRefresh.isEnabled = false
                 }
                 is FeedState.Error -> {
-                    toast("Error")
+                    toast(getString(R.string.error))
                     feedFabRefresh.isEnabled = true
                 }
             }

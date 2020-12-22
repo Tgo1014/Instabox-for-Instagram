@@ -23,4 +23,5 @@
     <string name="success">Sucesso</string>
     <string name="fail_to_get_image">Não foi possível obter imagem</string>
     <string name="share_to">Postar no Instas</string>
+    <string name="invalid_clarifai_key">Chave Clarifai invalida, por favor adicione uma chave valida no arquivo build.gradle</string>
 </resources>

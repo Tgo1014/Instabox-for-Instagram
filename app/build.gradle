@@ -17,7 +17,7 @@ android {
     defaultConfig {
         buildConfigField 'String', 'BASE_CLARIFAI_URL', "\"https://api.clarifai.com/v2/\""
         buildConfigField 'String', 'BASE_INSTAGRAM_URL', "\"https://i.instagram.com/api/v1/\""
-        buildConfigField 'String', 'KEY', "\"Key \""
+        buildConfigField 'String', 'KEY', "\"Key\""
     }
     flavorDimensions "version"
     productFlavors {

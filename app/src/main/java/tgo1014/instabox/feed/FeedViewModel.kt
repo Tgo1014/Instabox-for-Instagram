@@ -74,7 +74,7 @@ class FeedViewModel @ViewModelInject constructor(
             }
         } catch (e: Exception) {
             Timber.d(e)
-            launch(dispatcherProvider.main) { _state.postValue(FeedState.Error(Errors.UnableToGetFeed)) }
+            launch(dispatcherProvider.main) { _state.postValue(FeedState.Error(Errors.UnableToGetFeedError)) }
         }
     }
 
@@ -87,7 +87,7 @@ class FeedViewModel @ViewModelInject constructor(
         _state.postValue(FeedState.FeedSuccess(feedWrapper.feedItems))
     }, {
         Timber.d(it)
-        launchOnMain { _state.value = FeedState.Error(Errors.UnableToGetFeed) }
+        launchOnMain { _state.value = FeedState.Error(Errors.UnableToGetFeedError) }
     })
 
     private fun stateLoggedSuccessfully() {
@@ -132,7 +132,7 @@ class FeedViewModel @ViewModelInject constructor(
                 }, onError = {
                     if (error) return@performFeedItemAction
                     error = true
-                    launchOnMain { _state.value = FeedState.Error(Errors.UnableToGetFeed) }
+                    launchOnMain { _state.value = FeedState.Error(Errors.UnableToGetFeedError) }
                 }
             )
         }
