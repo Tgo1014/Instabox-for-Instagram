@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.peekandpop.shalskar.peekandpop.PeekAndPop
 import com.peekandpop.shalskar.peekandpop.PeekAndPop.OnHoldAndReleaseListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import okhttp3.internal.toLongOrDefault
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.load
@@ -31,7 +33,6 @@ class FeedAdapter(
     private val hasSelectedItems: OnSelected,
 ) : ListAdapter<FeedItem, RecyclerView.ViewHolder>(diffUtil) {
 
-    private val random = Random
     val selectedIdsList = mutableListOf<FeedItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -61,7 +62,7 @@ class FeedAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return currentList[position].id.toLongOrDefault(random.nextLong())
+        return getItem(position).id.substringBefore("_").toLongOrDefault(0)
     }
 
     inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -122,7 +123,9 @@ class FeedAdapter(
         // This filter remove the loading
         val newList = currentList.filterNot { it.id == "" }.toMutableList()
         newList.addAll(feedItemList)
-        submitList(newList, commitCallback)
+        submitList(newList) {
+            commitCallback?.run()
+        }
     }
 
     fun removeItem(vararg feedItem: FeedItem, commitCallback: Runnable? = null) {

@@ -1,18 +1,24 @@
 package tgo1014.instabox.feed
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemAnimator.ItemAnimatorFinishedListener
 import com.peekandpop.shalskar.peekandpop.PeekAndPop
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import tgo1014.instabox.R
 import tgo1014.instabox.common.utils.GridSpacingItemDecoration
+import tgo1014.instabox.common.utils.executeAfterAllAnimationsAreFinished
 import tgo1014.instabox.common.utils.openActivity
 import tgo1014.instabox.common.utils.showX
 import tgo1014.instabox.common.utils.toast
@@ -36,10 +42,10 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
     private val layoutManager by lazy { GridLayoutManager(requireContext(), 3) }
     private val adapter by lazy {
         FeedAdapter(
-            peekAndPop,
-            { viewModel.loadMore() },
-            { hasSelectedItems -> showFab(hasSelectedItems) }
-        )
+            peekAndPop = peekAndPop,
+            onLastItemReached = { viewModel.loadMore() },
+            hasSelectedItems = { hasSelectedItems -> showFab(hasSelectedItems) }
+        ).apply { setHasStableIds(true) }
     }
     private val peekAndPop by lazy {
         PeekAndPop.Builder(requireActivity())
@@ -61,7 +67,7 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
 
     private fun handleViewModel() {
         lifecycle.addObserver(viewModel)
-        viewModel.state.observe(viewLifecycleOwner, Observer { handleState(it) })
+        viewModel.state.observe(viewLifecycleOwner, ::handleState)
         viewModel.init(isArchive)
     }
 
@@ -105,7 +111,15 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
     }
 
     private fun removeItemFromList(vararg feedItem: FeedItem) {
-        adapter.removeItem(*feedItem, commitCallback = Runnable { handleListSizeState() })
+        adapter.removeItem(*feedItem, commitCallback = { handleListSizeState() })
+        // Without this, the adapter won't call the bind again,
+        // and the PeekAndPop will have a wrong position because it was not updated.
+        binding.feedRecycler.executeAfterAllAnimationsAreFinished {
+            lifecycleScope.launchWhenResumed {
+                delay(500)
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun handleState(state: FeedState) {
@@ -123,9 +137,9 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
                     clearDialog()
                 }
                 is FeedState.FeedSuccess -> {
-                    adapter.addItems(state.feedItems, Runnable {
+                    adapter.addItems(state.feedItems) {
                         handleListSizeState()
-                    })
+                    }
                     feedFabRefresh.isEnabled = true
                 }
                 is FeedState.Loading -> {
@@ -175,6 +189,8 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
 
         actionDialog?.show()
     }
+
+
 
     companion object {
         private const val PARAM_SHOW_ARCHIVED = "PARAM_SHOW_ARCHIVED"

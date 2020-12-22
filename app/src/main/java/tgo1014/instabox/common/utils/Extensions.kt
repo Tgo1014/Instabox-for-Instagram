@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -154,3 +155,20 @@ fun ExtendedFloatingActionButton.showX() {
         extend()
     }
 }
+
+/**
+ * https://stackoverflow.com/a/56446508/6022725
+ */
+fun RecyclerView.executeAfterAllAnimationsAreFinished(callback: (RecyclerView) -> Unit) = post(
+    object : Runnable {
+        override fun run() {
+            if (isAnimating) {
+                itemAnimator?.isRunning {
+                    post(this)
+                }
+            } else {
+                callback(this@executeAfterAllAnimationsAreFinished)
+            }
+        }
+    }
+)
