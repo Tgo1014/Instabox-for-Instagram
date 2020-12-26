@@ -8,18 +8,18 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tgo1014.instabox.BuildConfig
 import tgo1014.instabox.network.ClarifaiApi
-import tgo1014.instabox.utils.formatToCamelCase
-import tgo1014.instabox.utils.launchOnMain
-import tgo1014.instabox.utils.tryOnIO
+import tgo1014.instabox.network.models.PredictRequest
 import tgo1014.instabox.presentation.pickpicture.models.Errors
 import tgo1014.instabox.presentation.pickpicture.models.PickPictureState
-import tgo1014.instabox.network.models.PredictRequest
 import tgo1014.instabox.presentation.pickpicture.models.Prediction
+import tgo1014.instabox.utils.formatToCamelCase
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -39,35 +39,29 @@ class PickPictureViewModel @ViewModelInject constructor(
         cacheDir: File,
         contextResolver: ContentResolver,
         data: Intent?,
-    ) {
-
+    ) = viewModelScope.launch {
         stateUploading()
-
         if (data?.data == null) {
             stateErrorUnableToGetImage()
-            return
+            return@launch
         }
-
-        tryOnIO(
-            {
-                val tempFile = File(cacheDir, "image.jpg")
-                withContext(Dispatchers.IO) {
-                    tempFile.createNewFile()
-                    copyStreamToFile(contextResolver.openInputStream(data.data!!)!!, tempFile)
-                }
-                val compressedImageFile = Compressor.compress(context, tempFile)
-                val base64 = Base64.encode(compressedImageFile.readBytes(), Base64.NO_WRAP)
-                    .toString(Charset.defaultCharset())
-                val response = clarifaiApi.getHashtags(PredictRequest(base64))
-                    .toPredictionList()
-                    .formatToCamelCase()
-                launchOnMain { stateSuccess(response, compressedImageFile) }
-            },
-            {
-                Timber.d(it)
-                launchOnMain { stateErrorUnableToGetImage() }
+        try {
+            val tempFile = File(cacheDir, "image.jpg")
+            withContext(Dispatchers.IO) {
+                tempFile.createNewFile()
+                copyStreamToFile(contextResolver.openInputStream(data.data!!)!!, tempFile)
             }
-        )
+            val compressedImageFile = Compressor.compress(context, tempFile)
+            val base64 = Base64.encode(compressedImageFile.readBytes(), Base64.NO_WRAP)
+                .toString(Charset.defaultCharset())
+            val response = clarifaiApi.getHashtags(PredictRequest(base64))
+                .toPredictionList()
+                .formatToCamelCase()
+            stateSuccess(response, compressedImageFile)
+        } catch (e: Exception) {
+            Timber.d(e)
+            stateErrorUnableToGetImage()
+        }
     }
 
     fun onPickImageClikced() {

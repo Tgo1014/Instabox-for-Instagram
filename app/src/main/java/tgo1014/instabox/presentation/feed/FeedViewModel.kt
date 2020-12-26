@@ -3,10 +3,7 @@ package tgo1014.instabox.presentation.feed
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import tgo1014.instabox.di.CoroutinesDispatcherProvider
 import tgo1014.instabox.managers.UserManager
-import tgo1014.instabox.utils.launchOnMain
-import tgo1014.instabox.utils.tryOnIO
 import tgo1014.instabox.presentation.feed.interactors.ActionOnFeedItemInteractor
 import tgo1014.instabox.presentation.feed.interactors.GetArchivedPhotosInteractor
 import tgo1014.instabox.presentation.feed.interactors.GetSelfFeedInteractor
@@ -20,7 +17,6 @@ class FeedViewModel @ViewModelInject constructor(
     private val getArchivedPhotosInteractor: GetArchivedPhotosInteractor,
     private val actionOnFeedItemInteractor: ActionOnFeedItemInteractor,
     private val getSelfFeedInteractor: GetSelfFeedInteractor,
-    private val dispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel(), LifecycleObserver {
 
     private val _state = MutableLiveData<FeedState>()
@@ -62,31 +58,31 @@ class FeedViewModel @ViewModelInject constructor(
         if (isArchive) getUserArchivedFeed() else getSelfFeed()
     }
 
-    private fun getSelfFeed() = viewModelScope.launch(dispatcherProvider.io) {
+    private fun getSelfFeed() = viewModelScope.launch {
         try {
-            launch(dispatcherProvider.main) { _state.value = FeedState.Loading }
+            _state.value = FeedState.Loading
             val feedWrapper = getSelfFeedInteractor(nextMaxId)
             nextMaxId = feedWrapper.nextPageMaxId
             moreResultAvailable = feedWrapper.moreResultAvailable
-            launch(dispatcherProvider.main) {
-                _state.value = FeedState.FeedSuccess(feedWrapper.feedItems)
-            }
+            _state.value = FeedState.FeedSuccess(feedWrapper.feedItems)
         } catch (e: Exception) {
             Timber.d(e)
-            launch(dispatcherProvider.main) { _state.postValue(FeedState.Error(Errors.UnableToGetFeedError)) }
+            _state.postValue(FeedState.Error(Errors.UnableToGetFeedError))
         }
     }
 
-    private fun getUserArchivedFeed() = tryOnIO({
-        launchOnMain { _state.value = FeedState.Loading }
-        val feedWrapper = getArchivedPhotosInteractor(nextMaxId)
-        nextMaxId = feedWrapper.nextPageMaxId
-        moreResultAvailable = feedWrapper.moreResultAvailable
-        _state.postValue(FeedState.FeedSuccess(feedWrapper.feedItems))
-    }, {
-        Timber.d(it)
-        launchOnMain { _state.value = FeedState.Error(Errors.UnableToGetFeedError) }
-    })
+    private fun getUserArchivedFeed() = viewModelScope.launch {
+        try {
+            _state.value = FeedState.Loading
+            val feedWrapper = getArchivedPhotosInteractor(nextMaxId)
+            nextMaxId = feedWrapper.nextPageMaxId
+            moreResultAvailable = feedWrapper.moreResultAvailable
+            _state.postValue(FeedState.FeedSuccess(feedWrapper.feedItems))
+        } catch (e: Exception) {
+            Timber.d(e)
+            _state.value = FeedState.Error(Errors.UnableToGetFeedError)
+        }
+    }
 
     private fun stateLoggedSuccessfully() {
         _state.value = FeedState.UserLoggedSuccesfully
@@ -115,22 +111,19 @@ class FeedViewModel @ViewModelInject constructor(
         _state.value = FeedState.FeedActionRunning(count, feedItems.size)
         feedItems.forEach loop@{ feedItem ->
             performFeedItemAction(
-                feedItem,
+                feedItem = feedItem,
                 onSuccess = {
                     if (error) return@performFeedItemAction
                     if (count == feedItems.size) {
-                        launchOnMain { _state.value = FeedState.FeedItemActionSuccess(*feedItems) }
+                        _state.value = FeedState.FeedItemActionSuccess(*feedItems)
                     } else {
                         count += 1
-                        launchOnMain {
-                            _state.value =
-                                FeedState.FeedActionRunning(count, feedItems.size, feedItem)
-                        }
+                        _state.value = FeedState.FeedActionRunning(count, feedItems.size, feedItem)
                     }
                 }, onError = {
                     if (error) return@performFeedItemAction
                     error = true
-                    launchOnMain { _state.value = FeedState.Error(Errors.UnableToGetFeedError) }
+                    _state.value = FeedState.Error(Errors.UnableToGetFeedError)
                 }
             )
         }
@@ -140,11 +133,13 @@ class FeedViewModel @ViewModelInject constructor(
         feedItem: FeedItem,
         onSuccess: () -> Unit,
         onError: () -> Unit,
-    ) = tryOnIO({
-        actionOnFeedItemInteractor(feedItem)
-        onSuccess()
-    }, {
-        Timber.d(it)
-        onError()
-    })
+    ) = viewModelScope.launch {
+        try {
+            actionOnFeedItemInteractor(feedItem)
+            onSuccess()
+        } catch (e: Exception) {
+            Timber.d(e)
+            onError()
+        }
+    }
 }

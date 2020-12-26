@@ -13,7 +13,6 @@ import org.junit.Test
 import org.mockito.MockitoAnnotations
 import tgo1014.instabox.MainCoroutineRule
 import tgo1014.instabox.TestHelper.getFakeFeedWrapper
-import tgo1014.instabox.TestHelper.provideFakeCoroutinesDispatcherProvider
 import tgo1014.instabox.managers.UserManager
 import tgo1014.instabox.presentation.feed.interactors.ActionOnFeedItemInteractor
 import tgo1014.instabox.presentation.feed.interactors.GetArchivedPhotosInteractor
@@ -43,7 +42,6 @@ class FeedViewModelTest {
         getArchivedPhotosInteractor,
         actionOnFeedItemInteractor,
         getSelfFeedInteractor,
-        provideFakeCoroutinesDispatcherProvider(coroutinesRule.testDispatcher)
     )
 
     private val states = mutableListOf<FeedState>()

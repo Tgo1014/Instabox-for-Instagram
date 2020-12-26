@@ -47,36 +47,6 @@ fun Context.longToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
-fun ViewModel.launch(
-    context: CoroutineContext = EmptyCoroutineContext,
-    start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit,
-) = viewModelScope.launch(context, start, block)
-
-fun ViewModel.launchOnIO(
-    start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit,
-) = viewModelScope.launch(Dispatchers.IO, start, block)
-
-fun ViewModel.launchOnMain(
-    start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit,
-) = viewModelScope.launch(Dispatchers.Main, start, block)
-
-fun ViewModel.tryOnIO(
-    block: suspend CoroutineScope.() -> Unit,
-    exceptionHandler: (e: Exception) -> Unit,
-) {
-    launchOnIO {
-        try {
-            block()
-        } catch (e: Exception) {
-            Timber.e(e)
-            exceptionHandler.invoke(e)
-        }
-    }
-}
-
 fun TextView.addHashtags(hashtags: List<Prediction>, onHashTagClicked: OnHashtagClickedListener) {
     val hashtagList = hashtags.map { "#${it.description}" }
     this.text = hashtagList.joinToString(" ")

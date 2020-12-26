@@ -1,5 +1,7 @@
 package tgo1014.instabox.presentation.feed.interactors
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import tgo1014.instabox.managers.UserManager
 import tgo1014.instabox.network.InstagramApi
 import tgo1014.instabox.network.models.FeedResponse
@@ -14,24 +16,26 @@ class GetSelfFeedInteractor @Inject constructor(
 ) {
 
     suspend operator fun invoke(maxId: String? = null): FeedWrapper {
-        val feedResponse = instagramApi.gefFeed(userManager.userId, maxId)
-        val feedItems = feedResponse.items
-            ?.filter { it?.id != null }
-            ?.map {
-                FeedItem(
-                    id = it?.id ?: "",
-                    thumbUrl = getThumb(it),
-                    imageUrl = getImage(it),
-                    mediaType = FeedMediaType.find(it?.mediaType),
-                    isArchived = false
-                )
-            }.orEmpty()
-        return FeedWrapper(
-            feedItems,
-            feedResponse.nextMaxId,
-            true,
-            feedResponse.moreAvailable ?: false
-        )
+        return withContext(Dispatchers.IO) {
+            val feedResponse = instagramApi.gefFeed(userManager.userId, maxId)
+            val feedItems = feedResponse.items
+                ?.filter { it?.id != null }
+                ?.map {
+                    FeedItem(
+                        id = it?.id ?: "",
+                        thumbUrl = getThumb(it),
+                        imageUrl = getImage(it),
+                        mediaType = FeedMediaType.find(it?.mediaType),
+                        isArchived = false
+                    )
+                }.orEmpty()
+            return@withContext FeedWrapper(
+                feedItems,
+                feedResponse.nextMaxId,
+                true,
+                feedResponse.moreAvailable ?: false
+            )
+        }
     }
 
     private fun getImage(item: FeedResponse.Item?): String {

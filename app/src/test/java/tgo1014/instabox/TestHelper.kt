@@ -5,8 +5,6 @@ package tgo1014.instabox
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +17,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import tgo1014.instabox.di.CoroutinesDispatcherProvider
 import tgo1014.instabox.network.models.FeedResponse
 import tgo1014.instabox.presentation.feed.models.FeedItem
 import tgo1014.instabox.presentation.feed.models.FeedMediaType
@@ -83,18 +80,6 @@ object TestHelper {
         val uri = ClassLoader.getSystemResource(filePath)
         val file = File(uri.path)
         return String(file.readBytes())
-    }
-
-    @ExperimentalCoroutinesApi
-    fun Any.provideFakeCoroutinesDispatcherProvider(
-        dispatcher: TestCoroutineDispatcher?,
-    ): CoroutinesDispatcherProvider {
-        val sharedTestCoroutineDispatcher = TestCoroutineDispatcher()
-        return CoroutinesDispatcherProvider(
-            dispatcher ?: sharedTestCoroutineDispatcher,
-            dispatcher ?: sharedTestCoroutineDispatcher,
-            dispatcher ?: sharedTestCoroutineDispatcher
-        )
     }
 
     interface ManagedCoroutineScope : CoroutineScope {
