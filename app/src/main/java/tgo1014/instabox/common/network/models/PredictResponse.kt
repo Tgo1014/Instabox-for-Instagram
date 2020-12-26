@@ -1,7 +1,8 @@
-package tgo1014.instabox.pickpicture.models
+package tgo1014.instabox.common.network.models
 
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
+import tgo1014.instabox.pickpicture.models.Prediction
 
 @Keep
 data class PredictResponse(

@@ -5,8 +5,8 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import tgo1014.instabox.BuildConfig
-import tgo1014.instabox.pickpicture.models.PredictRequest
-import tgo1014.instabox.pickpicture.models.PredictResponse
+import tgo1014.instabox.common.network.models.PredictRequest
+import tgo1014.instabox.common.network.models.PredictResponse
 
 interface ClarifaiApi {
 

@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepnames class tgo1014.instabox.common.network.responses.*
+-keepnames class tgo1014.instabox.common.network.models.*
 
 #### OkHttp, Retrofit and Moshi
 -dontwarn okhttp3.**

@@ -5,7 +5,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import tgo1014.instabox.common.network.responses.FeedResponse
+import tgo1014.instabox.common.network.models.FeedResponse
 
 interface InstagramApi {
 

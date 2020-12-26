@@ -2,7 +2,7 @@ package tgo1014.instabox.feed.interactors
 
 import tgo1014.instabox.common.managers.UserManager
 import tgo1014.instabox.common.network.InstagramApi
-import tgo1014.instabox.common.network.responses.FeedResponse
+import tgo1014.instabox.common.network.models.FeedResponse
 import tgo1014.instabox.feed.models.FeedItem
 import tgo1014.instabox.feed.models.FeedMediaType
 import tgo1014.instabox.feed.models.FeedWrapper

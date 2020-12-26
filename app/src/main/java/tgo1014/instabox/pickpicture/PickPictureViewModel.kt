@@ -18,7 +18,7 @@ import tgo1014.instabox.common.utils.launchOnMain
 import tgo1014.instabox.common.utils.tryOnIO
 import tgo1014.instabox.pickpicture.models.Errors
 import tgo1014.instabox.pickpicture.models.PickPictureState
-import tgo1014.instabox.pickpicture.models.PredictRequest
+import tgo1014.instabox.common.network.models.PredictRequest
 import tgo1014.instabox.pickpicture.models.Prediction
 import timber.log.Timber
 import java.io.File

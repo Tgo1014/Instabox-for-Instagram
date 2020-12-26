@@ -1,4 +1,4 @@
-package tgo1014.instabox.common.network.responses
+package tgo1014.instabox.common.network.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

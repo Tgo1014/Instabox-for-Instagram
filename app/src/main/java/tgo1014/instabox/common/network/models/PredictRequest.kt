@@ -1,4 +1,4 @@
-package tgo1014.instabox.pickpicture.models
+package tgo1014.instabox.common.network.models
 
 import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
