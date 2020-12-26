@@ -107,6 +107,6 @@ data class PredictResponse(
     fun toPredictionList(): List<Prediction> {
         val predictions = this.outputs?.firstOrNull()?.data?.concepts?.filter { it?.name != null }
             ?.map { Prediction(it!!.name!!) }
-        return predictions ?: arrayListOf()
+        return predictions.orEmpty()
     }
 }

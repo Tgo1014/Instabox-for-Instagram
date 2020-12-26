@@ -1,6 +1,5 @@
 package tgo1014.instabox.feed.interactors
 
-import tgo1014.instabox.common.BaseInteractor
 import tgo1014.instabox.common.managers.UserManager
 import tgo1014.instabox.common.network.InstagramApi
 import tgo1014.instabox.common.network.responses.FeedResponse
@@ -12,14 +11,10 @@ import javax.inject.Inject
 class GetSelfFeedInteractor @Inject constructor(
     private val instagramApi: InstagramApi,
     private val userManager: UserManager,
-) : BaseInteractor<FeedWrapper> {
+) {
 
-    var input: Input? = null
-
-    data class Input(val maxId: String? = null)
-
-    override suspend fun execute(): FeedWrapper {
-        val feedResponse = instagramApi.gefFeed(userManager.userId, input?.maxId)
+    suspend operator fun invoke(maxId: String? = null): FeedWrapper {
+        val feedResponse = instagramApi.gefFeed(userManager.userId, maxId)
         val feedItems = feedResponse.items
             ?.filter { it?.id != null }
             ?.map {
@@ -30,8 +25,7 @@ class GetSelfFeedInteractor @Inject constructor(
                     mediaType = FeedMediaType.find(it?.mediaType),
                     isArchived = false
                 )
-            } ?: arrayListOf()
-
+            }.orEmpty()
         return FeedWrapper(
             feedItems,
             feedResponse.nextMaxId,
@@ -45,24 +39,39 @@ class GetSelfFeedInteractor @Inject constructor(
         return getImageFromAlbum(item) ?: getImageFromItem(item) ?: ""
     }
 
-    private fun getImageFromItem(item: FeedResponse.Item): String? =
-        item.imageVersions2?.candidates?.maxBy { it?.height ?: 0 }?.url
+    private fun getImageFromItem(item: FeedResponse.Item): String? {
+        return item.imageVersions2
+            ?.candidates
+            ?.maxByOrNull { it?.height ?: 0 }
+            ?.url
+    }
 
-    private fun getImageFromAlbum(item: FeedResponse.Item): String? =
-        item.carouselMedia?.firstOrNull()?.imageVersions2?.candidates?.maxBy {
-            it?.height ?: 0
-        }?.url
+    private fun getImageFromAlbum(item: FeedResponse.Item): String? {
+        return item.carouselMedia?.firstOrNull()
+            ?.imageVersions2
+            ?.candidates
+            ?.maxByOrNull { it?.height ?: 0 }
+            ?.url
+    }
 
     private fun getThumb(item: FeedResponse.Item?): String {
         if (item == null) return ""
         return getThumbFromAlbum(item) ?: getThumbFromItem(item) ?: ""
     }
 
-    private fun getThumbFromItem(item: FeedResponse.Item): String? =
-        item.imageVersions2?.candidates?.minBy { it?.height ?: 0 }?.url
+    private fun getThumbFromItem(item: FeedResponse.Item): String? {
+        return item.imageVersions2
+            ?.candidates
+            ?.minByOrNull { it?.height ?: 0 }
+            ?.url
+    }
 
-    private fun getThumbFromAlbum(item: FeedResponse.Item): String? =
-        item.carouselMedia?.firstOrNull()?.imageVersions2?.candidates?.minBy {
-            it?.height ?: 0
-        }?.url
+    private fun getThumbFromAlbum(item: FeedResponse.Item): String? {
+        return item.carouselMedia
+            ?.firstOrNull()
+            ?.imageVersions2
+            ?.candidates
+            ?.minByOrNull { it?.height ?: 0 }
+            ?.url
+    }
 }

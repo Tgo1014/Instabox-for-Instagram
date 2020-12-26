@@ -65,8 +65,7 @@ class FeedViewModel @ViewModelInject constructor(
     private fun getSelfFeed() = viewModelScope.launch(dispatcherProvider.io) {
         try {
             launch(dispatcherProvider.main) { _state.value = FeedState.Loading }
-            getSelfFeedInteractor.input = GetSelfFeedInteractor.Input(nextMaxId)
-            val feedWrapper = getSelfFeedInteractor.execute()
+            val feedWrapper = getSelfFeedInteractor(nextMaxId)
             nextMaxId = feedWrapper.nextPageMaxId
             moreResultAvailable = feedWrapper.moreResultAvailable
             launch(dispatcherProvider.main) {
@@ -80,8 +79,7 @@ class FeedViewModel @ViewModelInject constructor(
 
     private fun getUserArchivedFeed() = tryOnIO({
         launchOnMain { _state.value = FeedState.Loading }
-        getArchivedPhotosInteractor.input = GetArchivedPhotosInteractor.Input(nextMaxId)
-        val feedWrapper = getArchivedPhotosInteractor.execute()
+        val feedWrapper = getArchivedPhotosInteractor(nextMaxId)
         nextMaxId = feedWrapper.nextPageMaxId
         moreResultAvailable = feedWrapper.moreResultAvailable
         _state.postValue(FeedState.FeedSuccess(feedWrapper.feedItems))
@@ -143,8 +141,7 @@ class FeedViewModel @ViewModelInject constructor(
         onSuccess: () -> Unit,
         onError: () -> Unit,
     ) = tryOnIO({
-        actionOnFeedItemInteractor.input = ActionOnFeedItemInteractor.Input(feedItem)
-        actionOnFeedItemInteractor.execute()
+        actionOnFeedItemInteractor(feedItem)
         onSuccess()
     }, {
         Timber.d(it)
