@@ -53,7 +53,7 @@ class GetSelfFeedInteractorTest {
         // When Getting Feed With Logged User
         whenever(userManager.userId).thenReturn("123")
         mockWebServer.setResponse("feed_response.json")
-        val result = interactor.execute()
+        val result = interactor.invoke()
         // Then FeedItems Should Not Be Empty
         assert(result.feedItems.isNotEmpty())
     }
@@ -67,6 +67,6 @@ class GetSelfFeedInteractorTest {
         mockWebServer.setResponse("page_not_found.html", 404)
         // Then Should Throw HttpException
         thrown.expect(HttpException::class.java)
-        runBlocking { interactor.execute() }
+        runBlocking { interactor.invoke() }
     }
 }

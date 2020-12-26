@@ -86,7 +86,7 @@ class FeedViewModelTest {
         // Given The User Is Logged
         whenever(userManager.isUserLogged).thenReturn(true)
         val fakeFeedWrappper = getFakeFeedWrapper(false)
-        whenever(getSelfFeedInteractor.execute()).thenReturn(fakeFeedWrappper)
+        whenever(getSelfFeedInteractor.invoke()).thenReturn(fakeFeedWrappper)
         // When Initting the VM as not archive
         viewModel.init(false)
         // Then State Should be UserLoggedSuccesfully

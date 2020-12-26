@@ -85,19 +85,6 @@ object TestHelper {
         return String(file.readBytes())
     }
 
-    fun <T : Any, C> LiveData<T>.expect(result: C, onValue: ((value: C) -> Unit)? = null) {
-        val observer = object : Observer<T> {
-            override fun onChanged(o: T?) {
-                o?.let {
-                    assert(o::class.java == result)
-                }
-                onValue?.invoke(o as C)
-                this@expect.removeObserver(this)
-            }
-        }
-        this.observeForever(observer)
-    }
-
     @ExperimentalCoroutinesApi
     fun Any.provideFakeCoroutinesDispatcherProvider(
         dispatcher: TestCoroutineDispatcher?,
@@ -115,7 +102,7 @@ object TestHelper {
     }
 
     class LifecycleManagedCoroutineScope(
-        val lifecycleCoroutineScope: LifecycleCoroutineScope,
+        private val lifecycleCoroutineScope: LifecycleCoroutineScope,
         override val coroutineContext: CoroutineContext,
     ) : ManagedCoroutineScope {
         override fun launch(block: suspend CoroutineScope.() -> Unit): Job =

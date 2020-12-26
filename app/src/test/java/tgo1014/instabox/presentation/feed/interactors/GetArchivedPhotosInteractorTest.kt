@@ -43,7 +43,7 @@ class GetArchivedPhotosInteractorTest {
         val interactor = GetArchivedPhotosInteractor(instagramApi)
         // When Response Has Results
         mockWebServer.setResponse("feed_response.json")
-        val result = interactor.execute()
+        val result = interactor.invoke()
         // Then FeedItems Should Not Be Empty
         assert(result.feedItems.isNotEmpty())
         // Then Result Should Be Flagged As Archive
@@ -53,12 +53,10 @@ class GetArchivedPhotosInteractorTest {
     @Test
     fun feedNextPage_correctId() = runBlocking {
         // Given An Archived Feed API Fetch
-        val interactor = GetArchivedPhotosInteractor(instagramApi).apply {
-            input = GetArchivedPhotosInteractor.Input("test")
-        }
+        val interactor = GetArchivedPhotosInteractor(instagramApi)
         // When Using A Correct MaxId Param
         mockWebServer.setResponse("feed_response.json")
-        val result = interactor.execute()
+        val result = interactor.invoke("test")
         // Then FeedItems Should Not Be Empty
         assert(result.feedItems.isNotEmpty())
     }
@@ -66,12 +64,10 @@ class GetArchivedPhotosInteractorTest {
     @Test
     fun feedNextPage_incorrectId() = runBlocking {
         // Given An Archived Feed API Fetch
-        val interactor = GetArchivedPhotosInteractor(instagramApi).apply {
-            input = GetArchivedPhotosInteractor.Input("test")
-        }
+        val interactor = GetArchivedPhotosInteractor(instagramApi)
         // When Using A Wrong MaxId Param
         mockWebServer.setResponse("empty_response.json")
-        val result = interactor.execute()
+        val result = interactor.invoke("test")
         // Then FeedItems Should Be Empty
         assert(result.feedItems.isEmpty())
     }
