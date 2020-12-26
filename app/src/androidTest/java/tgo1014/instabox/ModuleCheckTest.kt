@@ -6,10 +6,10 @@ import org.junit.experimental.categories.Category
 import org.koin.android.ext.koin.androidContext
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.category.CheckModuleTest
-import tgo1014.instabox.common.di.interactorModule
-import tgo1014.instabox.common.di.networkModule
-import tgo1014.instabox.common.di.storageModule
-import tgo1014.instabox.common.di.viewModelModule
+import tgo1014.instabox.di.interactorModule
+import tgo1014.instabox.di.networkModule
+import tgo1014.instabox.di.storageModule
+import tgo1014.instabox.di.viewModelModule
 
 @Category(CheckModuleTest::class)
 class ModuleCheckTest : AutoCloseKoinTest() {

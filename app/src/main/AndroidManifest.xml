@@ -17,10 +17,10 @@
         android:theme="@style/AppTheme"
         tools:targetApi="q">
         <activity
-            android:name=".login.LoginActivity"
+            android:name="tgo1014.instabox.presentation.login.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".main.MainActivity"
+            android:name="tgo1014.instabox.presentation.main.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

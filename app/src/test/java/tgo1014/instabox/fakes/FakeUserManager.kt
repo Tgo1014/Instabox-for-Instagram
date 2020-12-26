@@ -1,6 +1,6 @@
 package tgo1014.instabox.fakes
 
-import tgo1014.instabox.common.managers.UserManager
+import tgo1014.instabox.managers.UserManager
 
 class FakeUserManager(
     override val isUserLogged: Boolean,

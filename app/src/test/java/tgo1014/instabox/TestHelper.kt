@@ -19,11 +19,11 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import tgo1014.instabox.common.CoroutinesDispatcherProvider
-import tgo1014.instabox.common.network.models.FeedResponse
-import tgo1014.instabox.feed.models.FeedItem
-import tgo1014.instabox.feed.models.FeedMediaType
-import tgo1014.instabox.feed.models.FeedWrapper
+import tgo1014.instabox.di.CoroutinesDispatcherProvider
+import tgo1014.instabox.network.models.FeedResponse
+import tgo1014.instabox.presentation.feed.models.FeedItem
+import tgo1014.instabox.presentation.feed.models.FeedMediaType
+import tgo1014.instabox.presentation.feed.models.FeedWrapper
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
