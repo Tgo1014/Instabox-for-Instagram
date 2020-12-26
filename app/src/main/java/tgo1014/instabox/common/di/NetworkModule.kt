@@ -64,14 +64,14 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideMoshi() = Moshi.Builder()
+    fun provideMoshi(): Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
     @Singleton
     @Provides
     @ClarifaiRetrofit
-    fun provideClarifaiRetrofit(okHttpClient: OkHttpClient, moshi: Moshi) =
+    fun provideClarifaiRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_CLARIFAI_URL)
@@ -81,7 +81,7 @@ object NetworkModule {
     @Singleton
     @Provides
     @InstagramRetrofit
-    fun provideInstagramRetrofit(okHttpClient: OkHttpClient, moshi: Moshi) =
+    fun provideInstagramRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_INSTAGRAM_URL)
