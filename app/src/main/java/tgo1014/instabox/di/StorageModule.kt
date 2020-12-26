@@ -19,9 +19,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class StorageModule {
 
+    @Singleton
     @Binds
     abstract fun bindCookieManager(cookieManagerImpl: CookieManagerImpl): CookieManager
 
+    @Singleton
     @Binds
     abstract fun bindUserManager(userManagerImpl: UserManagerImpl): UserManager
 
