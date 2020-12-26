@@ -13,7 +13,6 @@ import com.peekandpop.shalskar.peekandpop.PeekAndPop
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import tgo1014.instabox.R
-import tgo1014.instabox.utils.viewBinding
 import tgo1014.instabox.databinding.DialogActionBinding
 import tgo1014.instabox.databinding.FeedFragmentBinding
 import tgo1014.instabox.presentation.feed.models.FeedItem
@@ -24,6 +23,7 @@ import tgo1014.instabox.utils.executeAfterAllAnimationsAreFinished
 import tgo1014.instabox.utils.openActivity
 import tgo1014.instabox.utils.showX
 import tgo1014.instabox.utils.toast
+import tgo1014.instabox.utils.viewBinding
 
 @AndroidEntryPoint
 class FeedFragment : Fragment(R.layout.feed_fragment) {
@@ -62,8 +62,8 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
     }
 
     private fun handleViewModel() {
-        lifecycle.addObserver(viewModel)
         viewModel.state.observe(viewLifecycleOwner, ::handleState)
+        lifecycle.addObserver(viewModel)
         viewModel.init(isArchive)
     }
 
@@ -133,12 +133,11 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
                     clearDialog()
                 }
                 is FeedState.FeedSuccess -> {
-                    adapter.addItems(state.feedItems) {
-                        handleListSizeState()
-                    }
+                    adapter.addItems(state.feedItems) { handleListSizeState() }
                     feedFabRefresh.isEnabled = true
                 }
                 is FeedState.Loading -> {
+                    feedGroupLoggedOff.isVisible = false
                     adapter.addLoading()
                     feedFabRefresh.isEnabled = false
                 }
@@ -185,8 +184,6 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
 
         actionDialog?.show()
     }
-
-
 
     companion object {
         private const val PARAM_SHOW_ARCHIVED = "PARAM_SHOW_ARCHIVED"
