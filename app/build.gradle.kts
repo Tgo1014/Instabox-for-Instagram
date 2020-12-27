@@ -8,14 +8,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(Versions.Sdk.compileSdk)
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
-        applicationId = "tgo1014.instabox"
-        versionCode = 1
-        versionName = "1.0.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion(Versions.Sdk.minSdk)
+        targetSdkVersion(Versions.Sdk.targetSdk)
+        applicationId = Config.applicationId
+        versionCode = Versions.Build.code
+        versionName = Versions.Build.name
+        testInstrumentationRunner = Config.testInstrumentationRunner
         buildConfigString("BASE_CLARIFAI_URL", "https://api.clarifai.com/v2/")
         buildConfigString("BASE_INSTAGRAM_URL", "https://i.instagram.com/api/v1/")
         buildConfigString("KEY", "Key")
@@ -79,56 +79,56 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-alpha02")
 
     // Android
-    implementation("androidx.appcompat:appcompat:1.3.0-alpha02")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0-alpha2")
-    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation("androidx.appcompat:appcompat:${Versions.Android.appCompat}")
+    implementation("androidx.constraintlayout:constraintlayout:${Versions.Android.constrationLayout}")
+    implementation("androidx.security:security-crypto:${Versions.Android.crypto}")
 
     // Android KTX
-    implementation("androidx.core:core-ktx:1.5.0-alpha05")
-    implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-rc01")
-    implementation("androidx.fragment:fragment-ktx:1.3.0-rc01")
-    implementation("androidx.activity:activity-ktx:1.2.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.0-rc01")
-    kapt("androidx.lifecycle:lifecycle-common-java8:2.3.0-rc01") // use kapt for Kotlin)
+    implementation("androidx.core:core-ktx:${Versions.Ktx.core}")
+    implementation("androidx.preference:preference-ktx:${Versions.Ktx.prefs}")
+    implementation("androidx.fragment:fragment-ktx:${Versions.Ktx.fragment}")
+    implementation("androidx.activity:activity-ktx:${Versions.Ktx.activity}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.Ktx.lifecycle}")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Ktx.lifecycle}")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${Versions.Ktx.lifecycle}")
+    implementation("androidx.lifecycle:lifecycle-common-java8:${Versions.Ktx.lifecycle}")
+    kapt("androidx.lifecycle:lifecycle-common-java8:${Versions.Ktx.lifecycle}") // use kapt for Kotlin)
 
     // Material Design
-    implementation("com.google.android.material:material:1.3.0-beta01")
+    implementation("com.google.android.material:material:${Versions.material}")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Kotlin.coroutines}")
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation("com.squareup.retrofit2:retrofit:${Versions.Retrofit.core}")
+    implementation("com.squareup.retrofit2:converter-moshi:${Versions.Retrofit.core}")
+    implementation("com.squareup.okhttp3:logging-interceptor:${Versions.Retrofit.interceptor}")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.30.1-alpha")
-    kapt("com.google.dagger:hilt-android-compiler:2.30.1-alpha")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02")
-    kapt("androidx.hilt:hilt-compiler:1.0.0-alpha02")
+    implementation("com.google.dagger:hilt-android:${Versions.Hilt.android}")
+    kapt("com.google.dagger:hilt-android-compiler:${Versions.Hilt.android}")
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Versions.Hilt.viewmodel}")
+    kapt("androidx.hilt:hilt-compiler:${Versions.Hilt.viewmodel}")
 
     // Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.11.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}")
 
     // Timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:${Versions.timber}")
 
     // Glide
-    implementation("com.github.bumptech.glide:glide:4.11.0")
+    implementation("com.github.bumptech.glide:glide:${Versions.glide}")
 
     // PeakAndPop
-    implementation("com.github.shalskar:PeekAndPop:1.1.0")
+    implementation("com.github.shalskar:PeekAndPop:${Versions.peekAndPop}")
 
     // Lottie
-    implementation("com.airbnb.android:lottie:3.5.0")
+    implementation("com.airbnb.android:lottie:${Versions.lottie}")
 
     // Compression
-    implementation("id.zelory:compressor:3.0.0")
+    implementation("id.zelory:compressor:${Versions.compressor}")
 
 }
 
