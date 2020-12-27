@@ -3,16 +3,19 @@ Manage your feed allowing you to archive and unarchive multiples photos at the s
 
 ## What was used ?
 - Kotlin
+- Kotlin DSL for gradle settings
 - MVVM
-- Koin
+- Hilt
 - Jetpack (ViewModel, LiveData, etc)
+- ViewBinding
+- Interactors
 - Retrofit
 - Moshi
 - Timber
 - Glide
-- AdMob
-- Firebase
 - Coroutines
+- ~~Firebase~~ (Removed on most recent versions to allow the project to be build without an Google Services token)
+- ~~Admob~~ (Removed on most recent versions to allow the project to be build without an AdMob key)
 
 ### Unit tests
 - MockWebServer
