@@ -1,6 +1,6 @@
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# proguardFiles setting in build.gradle.kts.
 #
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepnames class tgo1014.instabox.common.network.responses.*
+-keepnames class tgo1014.instabox.network.models.*
 
 #### OkHttp, Retrofit and Moshi
 -dontwarn okhttp3.**

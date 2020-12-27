@@ -5,8 +5,6 @@ package tgo1014.instabox
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
@@ -19,14 +17,12 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import tgo1014.instabox.common.CoroutinesDispatcherProvider
-import tgo1014.instabox.common.network.responses.FeedResponse
-import tgo1014.instabox.feed.models.FeedItem
-import tgo1014.instabox.feed.models.FeedMediaType
-import tgo1014.instabox.feed.models.FeedWrapper
+import tgo1014.instabox.network.models.FeedResponse
+import tgo1014.instabox.presentation.feed.models.FeedItem
+import tgo1014.instabox.presentation.feed.models.FeedMediaType
+import tgo1014.instabox.presentation.feed.models.FeedWrapper
 import java.io.File
 import kotlin.coroutines.CoroutineContext
-
 
 object TestHelper {
 
@@ -86,38 +82,13 @@ object TestHelper {
         return String(file.readBytes())
     }
 
-    fun <T : Any, C> LiveData<T>.expect(result: C, onValue: ((value: C) -> Unit)? = null) {
-        val observer = object : Observer<T> {
-            override fun onChanged(o: T?) {
-                o?.let {
-                    assert(o::class.java == result)
-                }
-                onValue?.invoke(o as C)
-                this@expect.removeObserver(this)
-            }
-        }
-        this.observeForever(observer)
-    }
-
-    @ExperimentalCoroutinesApi
-    fun Any.provideFakeCoroutinesDispatcherProvider(
-        dispatcher: TestCoroutineDispatcher?
-    ): CoroutinesDispatcherProvider {
-        val sharedTestCoroutineDispatcher = TestCoroutineDispatcher()
-        return CoroutinesDispatcherProvider(
-            dispatcher ?: sharedTestCoroutineDispatcher,
-            dispatcher ?: sharedTestCoroutineDispatcher,
-            dispatcher ?: sharedTestCoroutineDispatcher
-        )
-    }
-
     interface ManagedCoroutineScope : CoroutineScope {
         fun launch(block: suspend CoroutineScope.() -> Unit): Job
     }
 
     class LifecycleManagedCoroutineScope(
-        val lifecycleCoroutineScope: LifecycleCoroutineScope,
-        override val coroutineContext: CoroutineContext
+        private val lifecycleCoroutineScope: LifecycleCoroutineScope,
+        override val coroutineContext: CoroutineContext,
     ) : ManagedCoroutineScope {
         override fun launch(block: suspend CoroutineScope.() -> Unit): Job =
             lifecycleCoroutineScope.launchWhenStarted(block)
@@ -132,5 +103,4 @@ object TestHelper {
             }
         }
     }
-
 }

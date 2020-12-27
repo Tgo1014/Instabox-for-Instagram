@@ -51,7 +51,7 @@ import org.junit.runner.Description
  */
 @ExperimentalCoroutinesApi
 class MainCoroutineRule(
-    val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher(),
 ) : TestWatcher() {
 
     override fun starting(description: Description?) {
@@ -64,9 +64,4 @@ class MainCoroutineRule(
         Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()
     }
-}
-
-@ExperimentalCoroutinesApi
-fun MainCoroutineRule.runBlocking(block: suspend () -> Unit) = this.testDispatcher.runBlockingTest {
-    block()
 }

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="tgo1014.instabox.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,10 +17,10 @@
         android:theme="@style/AppTheme"
         tools:targetApi="q">
         <activity
-            android:name=".login.LoginActivity"
+            android:name="tgo1014.instabox.presentation.login.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".main.MainActivity"
+            android:name="tgo1014.instabox.presentation.main.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
