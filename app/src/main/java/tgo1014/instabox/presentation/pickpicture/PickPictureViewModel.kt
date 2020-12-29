@@ -5,12 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.util.Base64
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tgo1014.instabox.BuildConfig
@@ -30,9 +30,8 @@ class PickPictureViewModel @ViewModelInject constructor(
     private val clarifaiApi: ClarifaiApi,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<PickPictureState>()
-    val state: LiveData<PickPictureState>
-        get() = _state
+    private val _state = MutableStateFlow<PickPictureState>(PickPictureState.Init)
+    val state: StateFlow<PickPictureState> get() = _state
 
     fun imageSelected(
         context: Context,

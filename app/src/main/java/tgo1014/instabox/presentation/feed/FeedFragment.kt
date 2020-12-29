@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.peekandpop.shalskar.peekandpop.PeekAndPop
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectIndexed
 import tgo1014.instabox.R
 import tgo1014.instabox.databinding.DialogActionBinding
 import tgo1014.instabox.databinding.FeedFragmentBinding
@@ -62,8 +64,10 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
     }
 
     private fun handleViewModel() {
-        viewModel.state.observe(viewLifecycleOwner, ::handleState)
         lifecycle.addObserver(viewModel)
+        lifecycleScope.launchWhenCreated {
+            viewModel.state.collect(::handleState)
+        }
         viewModel.init(isArchive)
     }
 
@@ -118,7 +122,8 @@ class FeedFragment : Fragment(R.layout.feed_fragment) {
         }
     }
 
-    private fun handleState(state: FeedState) {
+    private fun handleState(state: FeedState?) {
+        state ?: return
         with(binding) {
             when (state) {
                 FeedState.UserHasToLogin -> feedGroupLoggedOff.isVisible = true

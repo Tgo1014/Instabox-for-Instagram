@@ -2,19 +2,16 @@ package tgo1014.instabox.presentation.feed.interactors
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.ExpectedException
 import retrofit2.HttpException
+import tgo1014.instabox.MainCoroutineRule
 import tgo1014.instabox.TestHelper
 import tgo1014.instabox.TestHelper.setResponse
 import tgo1014.instabox.managers.UserManager
@@ -23,10 +20,10 @@ import tgo1014.instabox.network.InstagramApi
 @ExperimentalCoroutinesApi
 class GetSelfFeedInteractorTest {
 
+    // Set the main coroutines dispatcher for unit testing
     @get:Rule
-    var thrown: ExpectedException = ExpectedException.none()
+    var coroutinesRule = MainCoroutineRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
     private var userManager: UserManager = mock()
     private val mockWebServer = MockWebServer()
     private val instagramApi by lazy {
@@ -35,15 +32,12 @@ class GetSelfFeedInteractorTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
         mockWebServer.start()
     }
 
     @After
     fun shutdown() {
         mockWebServer.shutdown()
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
@@ -66,7 +60,8 @@ class GetSelfFeedInteractorTest {
         whenever(userManager.userId).thenReturn("")
         mockWebServer.setResponse("page_not_found.html", 404)
         // Then Should Throw HttpException
-        thrown.expect(HttpException::class.java)
-        runBlocking { interactor.invoke() }
+        Assert.assertThrows(HttpException::class.java) {
+            runBlocking { interactor.invoke() }
+        }
     }
 }

@@ -5,10 +5,10 @@ import android.webkit.WebViewClient
 import androidx.annotation.VisibleForTesting
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import tgo1014.instabox.managers.CookieManager
 import tgo1014.instabox.managers.UserManager
 import tgo1014.instabox.utils.substringBetween
@@ -18,8 +18,9 @@ class LoginViewModel @ViewModelInject constructor(
     private val cookieManager: CookieManager,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<LoginState>()
-    val state: LiveData<LoginState> get() = _state
+    private val _state = MutableStateFlow<LoginState>(LoginState.Init)
+    val state: StateFlow<LoginState> get() = _state
+
     val instaLoginUrl = "https://www.instagram.com/accounts/login/"
     val webviewClient by lazy { getWebClient() }
 

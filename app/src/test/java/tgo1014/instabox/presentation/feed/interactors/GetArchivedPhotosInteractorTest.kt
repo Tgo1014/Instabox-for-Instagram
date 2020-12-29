@@ -9,7 +9,9 @@ import kotlinx.coroutines.test.setMain
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import tgo1014.instabox.MainCoroutineRule
 import tgo1014.instabox.TestHelper.generateRetrofit
 import tgo1014.instabox.TestHelper.setResponse
 import tgo1014.instabox.network.InstagramApi
@@ -17,7 +19,9 @@ import tgo1014.instabox.network.InstagramApi
 @ExperimentalCoroutinesApi
 class GetArchivedPhotosInteractorTest {
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    // Set the main coroutines dispatcher for unit testing
+    @get:Rule
+    var coroutinesRule = MainCoroutineRule()
 
     private val mockWebServer = MockWebServer()
     private val instagramApi by lazy {
@@ -26,15 +30,12 @@ class GetArchivedPhotosInteractorTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
         mockWebServer.start()
     }
 
     @After
     fun shutdown() {
         mockWebServer.shutdown()
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test

@@ -1,19 +1,15 @@
 package tgo1014.instabox.presentation.feed.interactors
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.ExpectedException
 import retrofit2.HttpException
-import tgo1014.instabox.TestHelper
+import tgo1014.instabox.MainCoroutineRule
 import tgo1014.instabox.TestHelper.fakeFeedItem
 import tgo1014.instabox.TestHelper.generateRetrofit
 import tgo1014.instabox.TestHelper.setResponse
@@ -22,10 +18,10 @@ import tgo1014.instabox.network.InstagramApi
 @ExperimentalCoroutinesApi
 class ActionOnFeedItemInteractorTest {
 
+    // Set the main coroutines dispatcher for unit testing
     @get:Rule
-    var thrown: ExpectedException = ExpectedException.none()
+    var coroutinesRule = MainCoroutineRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
     private val mockWebServer = MockWebServer()
     private val instagramApi by lazy {
         generateRetrofit(mockWebServer).create(InstagramApi::class.java)
@@ -33,15 +29,12 @@ class ActionOnFeedItemInteractorTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
         mockWebServer.start()
     }
 
     @After
     fun shutdown() {
         mockWebServer.shutdown()
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
@@ -63,7 +56,8 @@ class ActionOnFeedItemInteractorTest {
         val input = fakeFeedItem
         mockWebServer.setResponse("change_media_response_error.json", 400)
         // Then Should Run
-        thrown.expect(HttpException::class.java)
-        runBlocking { interactor.invoke(input) }
+        assertThrows(HttpException::class.java) {
+            runBlocking { interactor.invoke(input) }
+        }
     }
 }

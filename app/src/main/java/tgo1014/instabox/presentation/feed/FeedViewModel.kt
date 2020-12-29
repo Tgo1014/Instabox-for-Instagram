@@ -2,6 +2,8 @@ package tgo1014.instabox.presentation.feed
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import tgo1014.instabox.managers.UserManager
 import tgo1014.instabox.presentation.feed.interactors.ActionOnFeedItemInteractor
@@ -19,8 +21,8 @@ class FeedViewModel @ViewModelInject constructor(
     private val getSelfFeedInteractor: GetSelfFeedInteractor,
 ) : ViewModel(), LifecycleObserver {
 
-    private val _state = MutableLiveData<FeedState>()
-    val state: LiveData<FeedState> get() = _state
+    private val _state = MutableStateFlow<FeedState>(FeedState.Init)
+    val state: StateFlow<FeedState> get() = _state
 
     private var moreResultAvailable = true
     private var nextMaxId: String? = null
@@ -67,7 +69,7 @@ class FeedViewModel @ViewModelInject constructor(
             _state.value = FeedState.FeedSuccess(feedWrapper.feedItems)
         } catch (e: Exception) {
             Timber.d(e)
-            _state.postValue(FeedState.Error(Errors.UnableToGetFeedError))
+            _state.value = FeedState.Error(Errors.UnableToGetFeedError)
         }
     }
 
@@ -77,7 +79,7 @@ class FeedViewModel @ViewModelInject constructor(
             val feedWrapper = getArchivedPhotosInteractor(nextMaxId)
             nextMaxId = feedWrapper.nextPageMaxId
             moreResultAvailable = feedWrapper.moreResultAvailable
-            _state.postValue(FeedState.FeedSuccess(feedWrapper.feedItems))
+            _state.value = FeedState.FeedSuccess(feedWrapper.feedItems)
         } catch (e: Exception) {
             Timber.d(e)
             _state.value = FeedState.Error(Errors.UnableToGetFeedError)
@@ -85,11 +87,11 @@ class FeedViewModel @ViewModelInject constructor(
     }
 
     private fun stateLoggedSuccessfully() {
-        _state.value = FeedState.UserLoggedSuccesfully
+        _state.tryEmit(FeedState.UserLoggedSuccesfully)
     }
 
     private fun stateHasToLogin() {
-        _state.value = FeedState.UserHasToLogin
+        _state.tryEmit(FeedState.UserHasToLogin)
     }
 
     fun resetAndReload() {

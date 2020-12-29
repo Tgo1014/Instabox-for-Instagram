@@ -52,7 +52,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
+    kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += listOf(
+            "-Xopt-in=kotlin.time.ExperimentalTime",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        )}
     sourceSets {
         getByName("test").resources.srcDirs("src/test/resources")
         getByName("androidTest").resources.srcDirs("src/androidTest/resources")
@@ -77,6 +81,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:3.5.13")
     androidTestImplementation("androidx.test.ext:junit:1.1.3-alpha02")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0-alpha02")
+    testImplementation("app.cash.turbine:turbine:0.3.0")
 
     // Android
     implementation("androidx.appcompat:appcompat:${Versions.Android.appCompat}")
@@ -90,7 +95,6 @@ dependencies {
     implementation("androidx.activity:activity-ktx:${Versions.Ktx.activity}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.Ktx.lifecycle}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Ktx.lifecycle}")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:${Versions.Ktx.lifecycle}")
     implementation("androidx.lifecycle:lifecycle-common-java8:${Versions.Ktx.lifecycle}")
     kapt("androidx.lifecycle:lifecycle-common-java8:${Versions.Ktx.lifecycle}") // use kapt for Kotlin)
 
@@ -99,6 +103,7 @@ dependencies {
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Kotlin.coroutines}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlin.coroutines}")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:${Versions.Retrofit.core}")

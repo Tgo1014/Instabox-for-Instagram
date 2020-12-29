@@ -8,7 +8,9 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import tgo1014.instabox.R
 import tgo1014.instabox.utils.longToast
 import tgo1014.instabox.utils.toast
@@ -29,7 +31,9 @@ class PickPictureFragment : Fragment(R.layout.pick_picture_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
-        viewModel.state.observe(viewLifecycleOwner, ::handleState)
+        lifecycleScope.launchWhenCreated {
+            viewModel.state.collect(::handleState)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

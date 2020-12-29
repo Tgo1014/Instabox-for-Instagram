@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import tgo1014.instabox.R
 import tgo1014.instabox.utils.toast
 import tgo1014.instabox.utils.viewBinding
@@ -20,7 +22,9 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        viewModel.state.observe(this, ::handleState)
+        lifecycleScope.launchWhenCreated {
+            viewModel.state.collect(::handleState)
+        }
         viewModel.verifyIfUserIsLogged()
         setupToolbar()
     }

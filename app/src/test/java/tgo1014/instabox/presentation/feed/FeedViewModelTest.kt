@@ -1,11 +1,14 @@
 package tgo1014.instabox.presentation.feed
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
+import app.cash.turbine.test
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -18,6 +21,7 @@ import tgo1014.instabox.presentation.feed.interactors.ActionOnFeedItemInteractor
 import tgo1014.instabox.presentation.feed.interactors.GetArchivedPhotosInteractor
 import tgo1014.instabox.presentation.feed.interactors.GetSelfFeedInteractor
 import tgo1014.instabox.presentation.feed.models.FeedState
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class FeedViewModelTest {
@@ -26,13 +30,7 @@ class FeedViewModelTest {
     @get:Rule
     var coroutinesRule = MainCoroutineRule()
 
-    // Executes tasks in the Architecture Components in the same thread
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
-
     private var userManager: UserManager = mock()
-    private var viewStateObserver: Observer<FeedState>? = null
-
     private var getArchivedPhotosInteractor: GetArchivedPhotosInteractor = mock()
     private var actionOnFeedItemInteractor: ActionOnFeedItemInteractor = mock()
     private var getSelfFeedInteractor: GetSelfFeedInteractor = mock()
@@ -44,55 +42,69 @@ class FeedViewModelTest {
         getSelfFeedInteractor,
     )
 
-    private val states = mutableListOf<FeedState>()
+    private lateinit var mockito: AutoCloseable
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
-        viewStateObserver = Observer<FeedState> { states.add(it) }
-        viewModel.state.observeForever(viewStateObserver!!)
+        mockito = MockitoAnnotations.openMocks(this)
     }
 
     @After
     fun tearDown() {
-        viewModel.state.removeObserver(viewStateObserver!!)
-        states.clear()
+        mockito.close()
     }
 
     @Test
-    fun init_userNotLogged() {
-        // Given The User Is Not Logged
-        whenever(userManager.isUserLogged).thenReturn(false)
-        // When Initting the VM
-        viewModel.init()
-        // Then State Should be UserHasToLogin
-        assert(states[0] is FeedState.UserHasToLogin)
+    fun init_userNotLogged() = runBlockingTest {
+        viewModel.state.test {
+            // Given The User Is Not Logged
+            whenever(userManager.isUserLogged).thenReturn(false)
+            // When Initting the VM
+            viewModel.init()
+            // Then State Should be Init
+            assert(expectItem() is FeedState.Init)
+            // Then State Should be UserHasToLogin
+            assert(expectItem() is FeedState.UserHasToLogin)
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test
-    fun init_userLogged() {
-        // Given The User Not Logged
-        whenever(userManager.isUserLogged).thenReturn(true)
-        // When Initting the VM
-        viewModel.init()
-        // Then State Should be UserHasToLogin
-        assert(states[0] is FeedState.UserLoggedSuccesfully)
+    fun init_userLogged() = runBlockingTest {
+        viewModel.state.test {
+            // Given The User Not Logged
+            whenever(userManager.isUserLogged).thenReturn(true)
+            // When Initting the VM
+            viewModel.init()
+            // Then State Should be Init
+            assert(expectItem() is FeedState.Init)
+            // Then State Should be UserHasToLogin
+            assert(expectItem() is FeedState.UserLoggedSuccesfully)
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test
-    fun userLogged_notArchive_feedSuccessful() = runBlocking {
-        // Given The User Is Logged
-        whenever(userManager.isUserLogged).thenReturn(true)
-        val fakeFeedWrappper = getFakeFeedWrapper(false)
-        whenever(getSelfFeedInteractor.invoke()).thenReturn(fakeFeedWrappper)
-        // When Initting the VM as not archive
-        viewModel.init(false)
-        // Then State Should be UserLoggedSuccesfully
-        assert(states[0] is FeedState.UserLoggedSuccesfully)
-        // Then State Should be Loading
-        assert(states[1] is FeedState.Loading)
-        // Then State Should be Success
-        assert(states[2] is FeedState.FeedSuccess)
-        assert((states[2] as FeedState.FeedSuccess).feedItems == fakeFeedWrappper.feedItems)
+    fun userLogged_notArchive_feedSuccessful() = runBlockingTest {
+        viewModel.state.test {
+            // Given The User Is Logged
+            whenever(userManager.isUserLogged).thenReturn(true)
+            val fakeFeedWrappper = getFakeFeedWrapper(false)
+            whenever(getSelfFeedInteractor.invoke()).thenReturn(fakeFeedWrappper)
+            // When Initting the VM as not archive
+            viewModel.init(false)
+            // Then State Should be Init
+            assert(expectItem() is FeedState.Init)
+            // Then State Should be UserLoggedSuccesfully
+            assert(expectItem() is FeedState.UserLoggedSuccesfully)
+            // Then State Should be Loading
+            assert(expectItem() is FeedState.Loading)
+            // Then State Should be Success
+            val item = expectItem()
+            assert(item is FeedState.FeedSuccess)
+            assert((item as FeedState.FeedSuccess).feedItems == fakeFeedWrappper.feedItems)
+            // Then should not receive any more events
+            expectNoEvents()
+        }
     }
 }
